@@ -7,6 +7,29 @@
     <title>Document</title>
 </head>
 <body>
+    <form action="/my-handling-form-page" method="post">
+          <div>
+            <label for="contributer_id">User ID:</label>
+            <input type="text" id="contributer_id" name="contributer">
+          </div>  
+          <div>
+            <label for="tite">Walk title:</label>
+            <input type="text" id="title" name="contributer_title">
+          </div>
+        
+          <div>
+            <label for="description">Walk description:</label>
+            <textarea id="description" name="contributer_description"></textarea>
+          </div>
+
+          <div>
+            <label for="thumbnail">Walk thumbnail URL:</label>
+            <input type="text" id="thumbnail" name="contributer_thumbnail">
+          </div>  
+          <div class="button">
+            <button type="submit">Submit your walk!</button>
+          </div>
+    </form>
     <script src="../javascript/contributeRoute.js"></script>
 </body>
 </html>
