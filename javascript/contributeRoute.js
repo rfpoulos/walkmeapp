@@ -13,6 +13,7 @@ var mapContainer = document.querySelector(".map");
 var map;
 var localRoute;
 var localRouteRef;
+var localMarkersList = [];
 
 var geoURL = function(str, cty, ste) {
     var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste + '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
