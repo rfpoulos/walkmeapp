@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="../css/detail.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Detail View</title>
 </head>
 <body>
-    <h1 id="title">Graffiti Hike</h1>
+    <div class="container">
     <div class="detail">
-        <div id="map">
-        </div>
+        <img id="user-image">
         <div class="info">
-            <img id="user-image">
             <div class="summary">
+                <h1 id="title">Graffiti Hike</h1>
                 <p>This beautiful graffiti-laden path will fill your
                     heart and mind with the wonder and beauty of aeresol spray paint.
                 </p>
                 <ul>
                     <li id="distance">5 miles</li>
                     <li id="rating">4 Stars</li>
-                    <li id="start">1234 Starting Address</li>
+                    <li id="address"></li>
                     <li id="contributor">FunGirl22</li>
                 </ul>
             </div>
@@ -32,6 +32,10 @@
         <button type="input">Save to Favorites</button>
         <button type="input">Return to List</button>
     </div>
+    <div id="map">
+            <img id="mapImg">
+    </div>
+</div>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
     // Initialize Firebase
