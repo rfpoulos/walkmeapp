@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css"href="contributeRoute.css">
+    <link rel="stylesheet" type="text/css" href="../css/contributeRoute.css">
     <title>WalkMe</title>
 </head>
 <body>
@@ -39,6 +39,9 @@
             <button type="submit">Submit your walk!</button>
         </div>
     </form>
+    <div class='map'>
+
+    </div>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
     // Initialize Firebase
@@ -53,5 +56,8 @@
     firebase.initializeApp(config);
     </script>
     <script src="../javascript/contributeRoute.js"></script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
+    </script>
 </body>
 </html>
