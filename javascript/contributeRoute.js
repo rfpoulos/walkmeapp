@@ -1,3 +1,4 @@
+var fireBaseRef = firebase.database().ref('routes');
 var walkForm = document.querySelector("[data-walk='form']");
 var userID = document.querySelector("[name='user']");
 var title = document.querySelector("[name='contributer_title']");
@@ -6,8 +7,6 @@ var city = document.querySelector("[name='walk_city']");
 var state = document.querySelector("[name='walk_state']");
 var description = document.querySelector("[name='contributer_description']");
 var thumbnail = document.querySelector("[name='contributer_thumbnail']");
-var localWalkArray = [];
-
 
 var recordWalk = function(event) {
     event.preventDefault();
@@ -20,7 +19,7 @@ var recordWalk = function(event) {
         "description": description.value,
         "thumbnail": thumbnail.value
     };
-    localWalkArray.push(currentWalk);
-    console.log(localWalkArray);
+    fireBaseRef.push().set(currentWalk);
+    walkForm.reset();
 };
 walkForm.addEventListener("submit", recordWalk);
