@@ -1,35 +1,3 @@
-// alert('connected');
-// var fireBaseRef = firebase.database().ref('routes');
-// var docAddress = document.getElementById('address');
-// var objectId = '-L763yP2Gv0-nU4jlWAp';
-// var fireBaseAddressRef = firebase.database().ref('routes/' + objectId + '/address');
-// var fbPath = fireBaseRef + 
-// fireBaseAddressRef.on('value', function(snapshot) {
-//     docAddress.textContent = snapshot.val();
-// });
-
-// var userImage = document.getElementById('user-image');
-// var userImageSource = "http://www.unit2fitness.com/wp-content/uploads/2013/01/Graffiti-Wallpaper-027.jpg";
-// userImage.src = userImageSource;
-
-// var mapImg = document.getElementById('mapImg');
-// mapImg.src = 'https://www.google.com/permissions/images/maps-att.png';
-
-// var thumbnail
-// var favorite
-// var title
-// var stars
-// var number of reviews
-
-// var address
-// var city
-// var state
-
-// var routeLength
-// var routeTime
-
-// var userID
-
 //Creates route-container div
 var body = document.querySelector('body');
 var divRouteContainer = document.createElement('div');
@@ -82,6 +50,7 @@ var divContributer = document.createElement('div');
 divContributer.setAttribute("class", "contributer");
 infoSectionSelector.appendChild(divContributer);
 
+// Info Section - Title and Distance Row
 var titleAndDistanceSelector = document.querySelector('.title-and-distancefrom');
 var divRouteTitle = document.createElement('div');
 divRouteTitle.setAttribute("class", "route-title");
@@ -90,7 +59,21 @@ titleAndDistanceSelector.appendChild(divRouteTitle);
 
 var divDistanceFrom = document.createElement('div');
 divDistanceFrom.setAttribute("class", "distancefrom");
+var divDistanceIcon = document.createElement('div');
+divDistanceIcon.setAttribute("class", "distancefrom-icon");
+var divDistanceNumber = document.createElement('div');
+divDistanceNumber.setAttribute("class", "distancefrom-number");
+divDistanceNumber.textContent = '1.2 mi'
+var imgDistanceIcon = document.createElement('img');
+imgDistanceIcon.setAttribute("class", "nearme");
+imgDistanceIcon.setAttribute("src", "images/nearme.png");
+
 titleAndDistanceSelector.appendChild(divDistanceFrom);
+divDistanceFrom.appendChild(divDistanceIcon);
+divDistanceFrom.appendChild(divDistanceNumber);
+divDistanceIcon.appendChild(imgDistanceIcon);
+
+// Info Section - Review Row
 
 
 
