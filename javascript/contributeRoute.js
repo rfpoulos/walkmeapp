@@ -18,7 +18,6 @@ var boundsContainer = document.getElementById('mapBounds');
 var localRoute;
 var localRouteRef;
 var map;
-var bounds;
 
 var geoURL = function(str, cty, ste) {
     var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste + '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
@@ -69,8 +68,6 @@ var addPOI = function(event) {
             "title": poiTitle,
             "content": poiContent,
         });
-        // console.log(localRouteRef['database']['key']);
-        // fireBaseRef.localRouteRef['database']['key'].set(localRoute);
         addPOIMarker(data);
         poiForm.reset();
     });
