@@ -18,7 +18,6 @@ var boundsContainer = document.getElementById('mapBounds');
 var localRoute;
 var localRouteRef;
 var map;
-var bounds;
 
 var geoURL = function(str, cty, ste) {
     var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste + '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
@@ -61,7 +60,6 @@ var getGeoLocation = function(googleUrl) {
 
 var addPOI = function(event) {
     event.preventDefault();
-    console.log(poiAddress.value, localRoute['city'], localRoute['state']);
     var markerLocation = getGeoLocation(geoURL(poiAddress.value, localRoute['city'], localRoute['state']));
     markerLocation.then(function(data){
         localRoute['pois'].push({
@@ -93,12 +91,11 @@ var recordWalk = function(event) {
                 "location": data,
                 "title": startTitle.value,
                 "content": startContent.value,
-            }]
+            },]
         };
         var walkObject = fireBaseRef.push()
         walkObject.set(currentWalk);
         localRouteRef = walkObject;
-        console.log(currentWalk);
         localRoute = currentWalk;
         initMap(data, 15);
         walkForm.reset();
