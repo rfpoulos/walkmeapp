@@ -64,7 +64,7 @@ button:hover {
 }
 
 #user-image {
-    width: 50%;
+    width: 70%;
     align-self: center;
     padding: 1%;
 }
@@ -72,7 +72,7 @@ button:hover {
 .info {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 30%;
     padding: 1%;
 }
 
@@ -84,6 +84,7 @@ button:hover {
 
 p {
     font-size: 1.5em;
+    margin: 0;
 }
 
 li {
@@ -91,4 +92,22 @@ li {
     font-weight: 400;
     color: #525151;
     list-style: none;
+}
+
+@media (max-width: 600px) {
+    .detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #user-image {
+        width: 70%;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        font-weight: 200;
+        width: 100%
+    }
 }
