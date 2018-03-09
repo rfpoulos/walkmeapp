@@ -70,6 +70,7 @@ var addPOI = function(event) {
         }
         localRoute['pois'].push(currentPOI);
         fireBaseRef.ref('routes/' + localRouteRef['key'] + '/pois').set(localRoute['pois']);
+        });
         addPOIMarker(data);
         poiForm.reset();
     });
