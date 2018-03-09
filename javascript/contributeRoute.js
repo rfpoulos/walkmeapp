@@ -1,4 +1,5 @@
-var fireBaseRef = firebase.database().ref('routes');
+var fireBaseRef = firebase.database();
+var fireBaseRoutes = fireBaseRef.ref('routes');
 var walkForm = document.querySelector("[data-walk='form']");
 var poiForm = document.querySelector("[data-poi='form']");
 var poiAddress = document.querySelector("[name='next-poi']");
@@ -62,13 +63,13 @@ var addPOI = function(event) {
     event.preventDefault();
     var markerLocation = getGeoLocation(geoURL(poiAddress.value, localRoute['city'], localRoute['state']));
     markerLocation.then(function(data){
-        localRoute['pois'].push({
+        currentPOI = {
             "location": data,
             "title": poiTitle,
             "content": poiContent,
-        });
-        // console.log(localRouteRef['database']['key']);
-        // fireBaseRef.localRouteRef['database']['key'].set(localRoute);
+        }
+        localRoute['pois'].push(currentPOI);
+        fireBaseRef.ref('routes/' + localRouteRef['key'] + '/pois').set(localRoute['pois']);
         addPOIMarker(data);
         poiForm.reset();
     });
@@ -93,7 +94,7 @@ var recordWalk = function(event) {
                 "content": startContent.value,
             },]
         };
-        var walkObject = fireBaseRef.push()
+        var walkObject = fireBaseRoutes.push()
         walkObject.set(currentWalk);
         localRouteRef = walkObject;
         localRoute = currentWalk;
