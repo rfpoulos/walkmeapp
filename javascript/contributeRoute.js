@@ -2,6 +2,10 @@ var fireBaseRef = firebase.database().ref('routes');
 var walkForm = document.querySelector("[data-walk='form']");
 var poiForm = document.querySelector("[data-poi='form']");
 var poiAddress = document.querySelector("[name='next-poi']");
+var poiTitle = document.querySelector("[name='poi_title']");
+var poiContent = document.querySelector("[name='poi_content']");
+var startTitle = document.querySelector("[name='start_title']");
+var startContent = document.querySelector("[name='start_content']");
 var userID = document.querySelector("[name='user']");
 var title = document.querySelector("[name='contributer_title']");
 var address = document.querySelector("[name='start_address']");
@@ -10,10 +14,11 @@ var state = document.querySelector("[name='walk_state']");
 var description = document.querySelector("[name='contributer_description']");
 var thumbnail = document.querySelector("[name='contributer_thumbnail']");
 var mapContainer = document.querySelector(".map");
-var map;
+var boundsContainer = document.getElementById('mapBounds');
 var localRoute;
 var localRouteRef;
-var localMarkersList = [];
+var map;
+var bounds;
 
 var geoURL = function(str, cty, ste) {
     var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste + '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
@@ -26,18 +31,22 @@ var initMap = function(location, zoomLevel) {
         zoom: zoomLevel
     });
     addPOIMarker(location, map);
+    google.maps.event.addListener(map, function() {
+        addPOIMarker();
+        });
+        
+    return map;
 }
 
-var addPOIMarker = function(poi, map) {
+var addPOIMarker = function(poi) {
     var marker = new google.maps.Marker({
         position: poi,
-        map: map
+        map: map,
     });
-    return marker
 }
 
-var getGeoLocation = function(url) {
-    return fetch(url, {
+var getGeoLocation = function(googleUrl) {
+    return fetch(googleUrl, {
     })
     .then(function(response){
         return response.json();
@@ -52,11 +61,17 @@ var getGeoLocation = function(url) {
 
 var addPOI = function(event) {
     event.preventDefault();
-    var markerLocation = getGeoLocation(geoURL(poiAddress, localRoute['city'], localRoute['state']));
+    console.log(poiAddress.value, localRoute['city'], localRoute['state']);
+    var markerLocation = getGeoLocation(geoURL(poiAddress.value, localRoute['city'], localRoute['state']));
     markerLocation.then(function(data){
-        addPOIMarker(data, map);
-        localRoute['pois'].push(data);
-        localRouteRef.set(localRoute);
+        localRoute['pois'].push({
+            "location": data,
+            "title": poiTitle,
+            "content": poiContent,
+        });
+        // console.log(localRouteRef['database']['key']);
+        // fireBaseRef.localRouteRef['database']['key'].set(localRoute);
+        addPOIMarker(data);
         poiForm.reset();
     });
 }
@@ -65,7 +80,6 @@ var recordWalk = function(event) {
     event.preventDefault();
     var mapLocation = getGeoLocation(geoURL(address.value, city.value, state.value));
     mapLocation.then(function(data){
-        initMap(data, 15);
         var currentWalk = {
             "userID": userID.value,
             "title": title.value,
@@ -75,12 +89,18 @@ var recordWalk = function(event) {
             "description": description.value,
             "thumbnail": thumbnail.value,
             "startLocation": data,
-            "pois": [data]
+            "pois": [{
+                "location": data,
+                "title": startTitle.value,
+                "content": startContent.value,
+            }]
         };
         var walkObject = fireBaseRef.push()
         walkObject.set(currentWalk);
         localRouteRef = walkObject;
+        console.log(currentWalk);
         localRoute = currentWalk;
+        initMap(data, 15);
         walkForm.reset();
     })
 };

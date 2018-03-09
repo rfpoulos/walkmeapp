@@ -20,6 +20,10 @@
         <div>
             <label for="address">Start address:</label>
             <input type="text" id="address" name="start_address">
+            <label for="start-title">Title</label>
+            <input type="text" id="start-title" name="start_title">
+            <label for="start-content">Content</label>
+            <textarea id="start-content" name="start_content"></textarea>
         </div>
         <div>
             <label for="city">City:</label>
@@ -41,16 +45,19 @@
     </form>
     <form data-poi="form">
         <div>
-            <label for="next_location">Next point of interest:</label>
-            <input type="text" id="next_location" name="next_poi">
+            <label for="next_location">Next point of interest address:</label>
+            <input type="text" id="next_location" name="next-poi">
+            <label for="poi_title">Title</label>
+            <input type="text" id="location_title" name="poi_title">
+            <label for="poi_content">Content</label>
+            <textarea id="location_content" name="poi_content"></textarea>
         </div>
         <div class="button">
             <button type="submit">Add point of interest</button>
         </div>
     </form>
-    <div class='map'>
-
-    </div>
+    <div id="mapBounds"></div>
+    <div class='map'></div>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
     // Initialize Firebase
