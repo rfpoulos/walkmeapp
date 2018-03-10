@@ -28,7 +28,7 @@ var geoURL = function(str, cty, ste) {
 var initMap = function(location, zoomLevel) {
     map = new google.maps.Map(mapContainer, {
         center: location,
-        zoom: zoomLevel
+        zoom: zoomLevel,
     });
     addPOIMarker(location, map);
     google.maps.event.addListener(map, function() {

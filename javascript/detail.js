@@ -8,6 +8,7 @@ var fireBaseStateRef = firebase.database().ref('routes/' + objectId + '/state');
 var fireBaseTitleRef = firebase.database().ref('routes/' + objectId + '/title');
 var fireBaseUserIdRef = firebase.database().ref('routes/' + objectId + '/userID');
 var fireBaseThumbnailRef = firebase.database().ref('routes/' + objectId + '/thumbnail');
+var fireBaseObject = firebase.database().ref('routes/' + '-L7BHy02U21wzEpofwxi');
 
 var docTitle = document.getElementById('title');
 fireBaseTitleRef.on('value', function(snapshot) {
@@ -44,11 +45,28 @@ fireBaseThumbnailRef.on('value', function(snapshot) {
     userImage.src = snapshot.val();
 });
 
-var docMap = document.querySelector(".map");
+var mapContainer = document.querySelector(".map");
 var map;
 
-var initMap = function(location, zoomLevel) {
+var initMap = function(location, pois, zoomLevel) {
     map = new google.maps.Map(mapContainer, {
         center: location,
-        zoom: zoomLevel
-})};
+        zoom: zoomLevel,
+    });
+    pois.forEach(function(element){
+        addPOIMarker(element['location']);
+    });
+    return map;
+}
+
+var addPOIMarker = function(poi) {
+    var marker = new google.maps.Marker({
+        position: poi,
+        map: map,
+    });
+}
+fireBaseObject.on("value", function(snapshot) {
+    var startLocation = snapshot.val()['startLocation'];
+    var pois = snapshot.val()['pois'];
+    initMap(startLocation, pois, 15);
+});

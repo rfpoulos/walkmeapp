@@ -1,9 +1,11 @@
-body {
-    display: flex;
-    font-family: 'Helvetica Neue';
-    flex-direction: column;
+.map {
+    height: 50%;
 }
-
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 h1 {
     font-family: 'Roboto', 'san-serif';
     align-self: flex-start;
@@ -11,6 +13,7 @@ h1 {
 
 .container {
     display: flex;
+    font-family: 'Helvetica Neue';
     flex-direction: column;
 }
 
@@ -19,15 +22,6 @@ h1 {
     align-items: center;
 }
 
-#map {
-    background: yellow;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 1%;
-    align-items: center;
-    height: 100%;
-}
 
 #mapImg { 
     width: 100%;
