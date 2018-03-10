@@ -1,5 +1,5 @@
 var fireBaseRef = firebase.database().ref('routes');
-var objectId = '-L7AaTEf_384qFSsm-OQ';
+var objectId = '-L7HAst3wa6jy74QFb5m';
 var fireBaseObject = firebase.database().ref('routes/' + objectId);
 
 var docTitle = document.getElementById('title');
@@ -11,6 +11,14 @@ var docUserId = document.getElementById('userId');
 var userImage = document.getElementById('user-image');
 var mapContainer = document.querySelector(".map");
 var map;
+
+var adjustMap = function(locationsArray){
+    var bounds = new google.maps.LatLngBounds();
+    locationsArray.forEach(function(element){
+        bounds.extend(element['location']);
+    })
+    map.fitBounds(bounds);
+}
 
 var initMap = function(location, pois, zoomLevel) {
     map = new google.maps.Map(mapContainer, {
@@ -59,4 +67,5 @@ fireBaseObject.on("value", function(snapshot) {
     var startLocation = snapshot.val()['startLocation'];
     var pois = snapshot.val()['pois'];
     initMap(startLocation, pois, 15);
+    adjustMap(pois);
 });
