@@ -18,15 +18,34 @@ var initMap = function(location, pois, zoomLevel) {
         zoom: zoomLevel,
     });
     pois.forEach(function(element){
-        addPOIMarker(element['location']);
+        addPOIMarker(element['location'], element['title'], element['content']);
     });
     return map;
 }
 
-var addPOIMarker = function(poi) {
+var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
+    });
+    var poiContainer = document.createElement('div');
+
+    var contentDiv = document.createElement('div');
+    contentDiv.classList.add('poi-content');
+    contentDiv.textContent = poiContent;
+
+    var titleDiv = document.createElement('div');
+    titleDiv.classList.add('poi-title');
+    titleDiv.textContent = poiTitle;
+
+    poiContainer.appendChild(titleDiv);
+    poiContainer.appendChild(contentDiv);
+
+    var infowindow = new google.maps.InfoWindow({
+        content: poiContainer.innerHTML,
+      });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
     });
 }
 fireBaseObject.on("value", function(snapshot) {
