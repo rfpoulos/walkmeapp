@@ -15,7 +15,6 @@ var state = document.querySelector("[name='walk_state']");
 var description = document.querySelector("[name='contributer_description']");
 var thumbnail = document.querySelector("[name='contributer_thumbnail']");
 var mapContainer = document.querySelector(".map");
-var boundsContainer = document.getElementById('mapBounds');
 var localRoute;
 var localRouteRef;
 var map;
@@ -25,24 +24,53 @@ var geoURL = function(str, cty, ste) {
     return geoURLResponse;
 }
 
-var initMap = function(location, zoomLevel) {
+var initMap = function(location, title, content, zoomLevel) {
     map = new google.maps.Map(mapContainer, {
         center: location,
         zoom: zoomLevel,
     });
-    addPOIMarker(location, map);
+    addPOIMarker(location, title, content);
     google.maps.event.addListener(map, function() {
         addPOIMarker();
+        fitBounds();
         });
         
     return map;
 }
 
-var addPOIMarker = function(poi) {
+var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
+        title: poiTitle.value,
     });
+    var poiContainer = document.createElement('div');
+
+    var contentDiv = document.createElement('h4');
+    contentDiv.classList.add('poi-content');
+    contentDiv.textContent = poiContent;
+
+    var titleDiv = document.createElement('h2');
+    titleDiv.classList.add('poi-title');
+    titleDiv.textContent = poiTitle;
+
+    poiContainer.appendChild(titleDiv);
+    poiContainer.appendChild(contentDiv);
+
+    var infowindow = new google.maps.InfoWindow({
+        content: poiContainer.innerHTML,
+      });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    });
+}
+
+var adjustMap = function(locationsArray){
+    var bounds = new google.maps.LatLngBounds();
+    locationsArray.forEach(function(element){
+        bounds.extend(element['location']);
+    })
+    map.fitBounds(bounds);
 }
 
 var getGeoLocation = function(googleUrl) {
@@ -65,16 +93,16 @@ var addPOI = function(event) {
     markerLocation.then(function(data){
         currentPOI = {
             "location": data,
-            "title": poiTitle,
-            "content": poiContent,
+            "title": poiTitle.value,
+            "content": poiContent.value,
         }
         localRoute['pois'].push(currentPOI);
         fireBaseRef.ref('routes/' + localRouteRef['key'] + '/pois').set(localRoute['pois']);
-        });
-        addPOIMarker(data);
+        adjustMap(localRoute['pois']);
+        addPOIMarker(data, currentPOI['title'], currentPOI['content']);
         poiForm.reset();
-    });
-}
+        });
+    };
 
 var recordWalk = function(event) {
     event.preventDefault();
@@ -89,6 +117,7 @@ var recordWalk = function(event) {
             "description": description.value,
             "thumbnail": thumbnail.value,
             "startLocation": data,
+            "public": false,
             "pois": [{
                 "location": data,
                 "title": startTitle.value,
@@ -99,7 +128,7 @@ var recordWalk = function(event) {
         walkObject.set(currentWalk);
         localRouteRef = walkObject;
         localRoute = currentWalk;
-        initMap(data, 15);
+        initMap(data, startTitle.value, startContent.value, 15);
         walkForm.reset();
     })
 };

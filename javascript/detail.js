@@ -1,5 +1,5 @@
 var fireBaseRef = firebase.database().ref('routes');
-var objectId = '-L7AaTEf_384qFSsm-OQ';
+var objectId = '-L7HAst3wa6jy74QFb5m';
 var fireBaseObject = firebase.database().ref('routes/' + objectId);
 
 var docTitle = document.getElementById('title');
@@ -12,21 +12,48 @@ var userImage = document.getElementById('user-image');
 var mapContainer = document.querySelector(".map");
 var map;
 
+var adjustMap = function(locationsArray){
+    var bounds = new google.maps.LatLngBounds();
+    locationsArray.forEach(function(element){
+        bounds.extend(element['location']);
+    })
+    map.fitBounds(bounds);
+}
+
 var initMap = function(location, pois, zoomLevel) {
     map = new google.maps.Map(mapContainer, {
         center: location,
         zoom: zoomLevel,
     });
     pois.forEach(function(element){
-        addPOIMarker(element['location']);
+        addPOIMarker(element['location'], element['title'], element['content']);
     });
     return map;
 }
 
-var addPOIMarker = function(poi) {
+var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
+    });
+    var poiContainer = document.createElement('div');
+
+    var contentDiv = document.createElement('div');
+    contentDiv.classList.add('poi-content');
+    contentDiv.textContent = poiContent;
+
+    var titleDiv = document.createElement('div');
+    titleDiv.classList.add('poi-title');
+    titleDiv.textContent = poiTitle;
+
+    poiContainer.appendChild(titleDiv);
+    poiContainer.appendChild(contentDiv);
+
+    var infowindow = new google.maps.InfoWindow({
+        content: poiContainer.innerHTML,
+      });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
     });
 }
 fireBaseObject.on("value", function(snapshot) {
@@ -40,4 +67,5 @@ fireBaseObject.on("value", function(snapshot) {
     var startLocation = snapshot.val()['startLocation'];
     var pois = snapshot.val()['pois'];
     initMap(startLocation, pois, 15);
+    adjustMap(pois);
 });
