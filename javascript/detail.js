@@ -32,24 +32,29 @@ var initMap = function(location, pois, zoomLevel) {
     return map;
 }
 
+var titleContentDOM = function(title, content) {
+    var poiContainer = document.createElement('div');
+
+    var contentDiv = document.createElement('h4');
+    contentDiv.classList.add('poi-content');
+    contentDiv.textContent = content;
+
+    var titleDiv = document.createElement('h2');
+    titleDiv.classList.add('poi-title');
+    titleDiv.textContent = title;
+
+    poiContainer.appendChild(titleDiv);
+    poiContainer.appendChild(contentDiv);
+
+    return poiContainer;
+}
+
 var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
     });
-    var poiContainer = document.createElement('div');
-
-    var contentDiv = document.createElement('h4');
-    contentDiv.classList.add('poi-content');
-    contentDiv.textContent = poiContent;
-
-    var titleDiv = document.createElement('h2');
-    titleDiv.classList.add('poi-title');
-    titleDiv.textContent = poiTitle;
-
-    poiContainer.appendChild(titleDiv);
-    poiContainer.appendChild(contentDiv);
-
+    poiContainer = titleContentDOM(poiTitle, poiContent);
     var infowindow = new google.maps.InfoWindow({
         content: poiContainer.innerHTML,
       });
