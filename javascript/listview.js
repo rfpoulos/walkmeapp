@@ -51,11 +51,21 @@ divContributer.setAttribute("class", "contributer");
 infoSectionSelector.appendChild(divContributer);
 
 // Info Section - Title and Distance Row
+
+var getTitleValue = function () {
+    var titleSelector = titleAndDistanceSelector.querySelector('.route-title');
+    var dbTitleRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/title');
+    dbTitleRef.on('value', snap => titleSelector.innerText = snap.val());
+}
 var titleAndDistanceSelector = document.querySelector('.title-and-distancefrom');
-var divRouteTitle = document.createElement('div');
-divRouteTitle.setAttribute("class", "route-title");
-divRouteTitle.textContent = 'Graffiti';
-titleAndDistanceSelector.appendChild(divRouteTitle);
+
+var addTitleDiv = function () {
+    var divRouteTitle = document.createElement('div');
+    divRouteTitle.setAttribute("class", "route-title");
+    titleAndDistanceSelector.appendChild(divRouteTitle);
+    getTitleValue();
+} ();
+
 
 var divDistanceFrom = document.createElement('div');
 divDistanceFrom.setAttribute("class", "distancefrom");
@@ -117,11 +127,19 @@ imgContributerIcon.setAttribute('src', 'images/contributer_small.png');
 imgContributerIcon.setAttribute('class', 'contributer-icon');
 divContributer.appendChild(imgContributerIcon);
 
-var divContributerName = document.createElement('div');
-divContributerName.setAttribute('class', 'contributer-name');
-divContributerName.textContent = 'Ponchieponcho';
-divContributer.appendChild(divContributerName);
+var getUserIdValue = function () {
+    var userSelector = divContributer.querySelector('.contributer-name');
+    var dbRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/userID');
+    dbRef.on('value', snap => userSelector.innerText = snap.val());
+}
 
+var addUserIdDiv = function () {
+    var divContributerName = document.createElement('div');
+    divContributerName.setAttribute('class', 'contributer-name');
+    divContributer.appendChild(divContributerName);
+    getUserIdValue();
+
+} ();
 
 
 

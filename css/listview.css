@@ -22,7 +22,7 @@
     }
     .image-section {
         display: flex;
-        background-color: aqua;
+        /* background-color: aqua; */
         min-width: 120px;
         max-height: 130px;
         
