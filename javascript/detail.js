@@ -54,7 +54,7 @@ var addPOIMarker = function(poi, poiTitle, poiContent) {
         position: poi,
         map: map,
     });
-    poiContainer = titleContentDOM(poiTitle, poiContent);
+    var poiContainer = titleContentDOM(poiTitle, poiContent);
     var infowindow = new google.maps.InfoWindow({
         content: poiContainer.innerHTML,
       });
@@ -72,6 +72,24 @@ var openGoogleMaps = function(pois) {
     var win = window.open(googleUrl);
     win.focus();
 }
+
+var getWalkerLocation = function() {
+    infoWindow = new google.maps.InfoWindow;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        addPOIMarker(pos, 'You are here', '');
+        }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
 fireBaseObject.on("value", function(snapshot) {
     var map;
     docTitle.textContent = snapshot.val()['title'];
@@ -85,6 +103,7 @@ fireBaseObject.on("value", function(snapshot) {
     var pois = snapshot.val()['pois'];
     initMap(startLocation, pois, 15);
     adjustMap(pois);
+    getWalkerLocation();
     navigate.addEventListener("click", function(){
         openGoogleMaps(pois);
     });
