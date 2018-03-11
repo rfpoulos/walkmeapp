@@ -1,5 +1,5 @@
 var fireBaseRef = firebase.database().ref('routes');
-var objectId = '-L7HAst3wa6jy74QFb5m';
+var objectId = '-L7LE7Sokvs9dj9mTGmg';
 var fireBaseObject = firebase.database().ref('routes/' + objectId);
 
 var docTitle = document.getElementById('title');
@@ -10,7 +10,8 @@ var docState = document.getElementById('state');
 var docUserId = document.getElementById('userId');
 var userImage = document.getElementById('user-image');
 var mapContainer = document.querySelector(".map");
-var map;
+
+var navigate = document.getElementById('navigate');
 
 var adjustMap = function(locationsArray){
     var bounds = new google.maps.LatLngBounds();
@@ -56,7 +57,18 @@ var addPOIMarker = function(poi, poiTitle, poiContent) {
         infowindow.open(map, marker);
     });
 }
+var openGoogleMaps = function(pois) {
+    var googleUrl = 'http://maps.google.com/maps?dirflg=w&saddr=' + pois[0]['location']['lat'] + ',' + pois[0]['location']['lng'] +
+                         '&daddr=' + pois[1]['location']['lat'] + ',' + pois[1]['location']['lng'];
+    for (var i = 2; i < pois.length; i++) {
+        googleUrl = googleUrl + '+to:' + pois[i]['location']['lat'] + ',' + pois[i]['location']['lng'];
+    }
+    console.log(googleUrl);
+    var win = window.open(googleUrl);
+    win.focus();
+}
 fireBaseObject.on("value", function(snapshot) {
+    var map;
     docTitle.textContent = snapshot.val()['title'];
     docDesc.textContent = snapshot.val()['description'];
     docAddress.textContent = snapshot.val()['address'];
@@ -68,4 +80,7 @@ fireBaseObject.on("value", function(snapshot) {
     var pois = snapshot.val()['pois'];
     initMap(startLocation, pois, 15);
     adjustMap(pois);
+    navigate.addEventListener("click", function(){
+        openGoogleMaps(pois);
+    });
 });
