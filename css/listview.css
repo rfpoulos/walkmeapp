@@ -163,3 +163,115 @@
     .contributer-icon {
         margin-left:1px;
     }
+
+    #modal {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+    
+    .map {
+        height: 50%;
+        margin: 1em;
+    }
+
+    h1 {
+        font-family: 'Roboto', 'san-serif';
+        align-self: flex-start;
+    }
+    
+    .container {
+        display: flex;
+        font-family: 'Helvetica Neue';
+        flex-direction: column;
+    }
+    
+    #title {
+        display: flex;
+        align-items: center;
+    }
+    
+    
+    #mapImg { 
+        width: 100%;
+    }
+    
+    .detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    button {
+        display: inline-block;
+        width: 30%;
+        border-style: solid;
+        border-color: white;
+        background: #f1f1f1;
+        padding: 1%;
+        font-family: 'Helvetica Neue';
+        font-size: 1em;
+        border-radius: 5px;
+        font-weight: 200;
+    }
+    
+    button:hover {
+        background: #fafafa;
+        cursor: pointer;
+    }
+    
+    #user-image {
+        width: 70%;
+        align-self: center;
+        padding: 1%;
+    }
+    
+    .info {
+        display: flex;
+        flex-direction: row;
+        width: 30%;
+        padding: 1%;
+    }
+    
+    .summary {
+        display: flex;
+        flex-direction: column;
+        font-weight: 200;
+    }
+    
+    p {
+        font-size: 1.5em;
+        margin: 0;
+    }
+    
+    li {
+        font-family: 'Helvetica Neue';
+        font-weight: 400;
+        color: #525151;
+        list-style: none;
+    }
+    
+    @media (max-width: 600px) {
+        .detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #user-image {
+            width: 70%;
+        }
+    
+        .info {
+            display: flex;
+            flex-direction: column;
+            font-weight: 200;
+            width: 100%
+        }
+    }
