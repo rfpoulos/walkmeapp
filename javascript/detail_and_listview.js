@@ -195,7 +195,8 @@ var makeDetailView = function(id) {
     });
 
     returnBtnSelector.addEventListener('click', function() {
-        console.log('working');
+        listViewSelector.className = "viewable-on";
+        detailViewSelector.className = "viewable-off"
     })
 }
 
