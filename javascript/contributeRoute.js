@@ -128,6 +128,7 @@ var recordWalk = function(event) {
             "startLocation": data,
             "public": false,
             "distance": null,
+            "duration": null,
             "pois": [{
                 "location": data,
                 "title": startTitle.value,
@@ -165,18 +166,25 @@ var calcRoute = function(pois) {
     };
     directionsService.route(request, function(result, status) {
         var totalDistance = 0;
+        var totalTime = 0;
         if (status == 'OK') {
+            console.log(result);
             directionsDisplay.setDirections(result);
             result['routes'][0]['legs'].forEach(function(element){
                 totalDistance += element['distance']['value'];
+                totalTime += element['duration']['value'];
             })
         }
         localRoute['distance'] = metersToMiles(totalDistance);
-        fireBaseRef.ref('routes/' + localRouteRef['key'] + '/distance').set(localRoute['distance']);
+        localRoute['duration'] = secondsToMinutes(totalTime);
+        fireBaseRef.ref('routes/' + localRouteRef['key']).set(localRoute);
     });
 }
 var metersToMiles = function(number) {
     return number / 1609.344;
+}
+var secondsToMinutes = function(number) {
+    return Math.round(number / 60);
 }
 
 walkForm.addEventListener("submit", recordWalk);
