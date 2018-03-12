@@ -11,30 +11,31 @@
 <body>
     <div class="container">
     <div class="detail">
-        <img id="user-image">
-        <div class="info">
-            <div class="summary">
-                <h1 id="title"></h1>
-                <p id="description">
-                </p>
-                <ul>
-                    <li id="distance"></li>
-                    <li id="rating"></li>
-                    <li id="address"></li>
-                    <li id="city"></li>
-                    <li id="state"></li>
-                    <li id="userId"></li>
-                </ul>
+        <div class="not-map">
+            <img id="user-image">
+            <div class="info">
+                <div class="summary">
+                    <h1 id="title"></h1>
+                    <p id="description">
+                    </p>
+                    <ul>
+                        <li id="distance"></li>
+                        <li id="rating"></li>
+                        <li id="address"></li>
+                        <li id="city"></li>
+                        <li id="state"></li>
+                        <li id="userId"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="options">
+                <button type="input" id="navigate">Navigate</button>
+                <button type="input">Save to Favorites</button>
+                <button type="input">Return to List</button>
             </div>
         </div>
+        <div class='map'></div>
     </div>
-    <div class="options">
-        <button type="input" id="navigate">Navigate</button>
-        <button type="input">Save to Favorites</button>
-        <button type="input">Return to List</button>
-    </div>
-</div>
-    <div class='map'></div>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
      </script>
