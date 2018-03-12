@@ -171,6 +171,7 @@ var calcRoute = function(pois) {
         }
         localRoute['distance'] = metersToMiles(totalDistance);
         localRoute['duration'] = secondsToMinutes(totalTime);
+        saveWalktoFirebase(localRoute);
     });
 }
 
@@ -189,5 +190,4 @@ walkForm.addEventListener("submit", recordWalk);
 poiForm.addEventListener("submit", addPOI);
 reviewButton.addEventListener("click", function() {
     calcRoute(localRoute['pois']);
-    saveWalktoFirebase(localRoute);
 });
