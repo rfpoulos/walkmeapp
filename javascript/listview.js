@@ -1,5 +1,5 @@
 var listViewSelector = document.getElementById('listview')
-var detailViewSelector = document.getElementById('detail')
+var detailViewSelector = document.getElementById('detailview')
 var objectId = '';
 
 var createListView = function () {
@@ -26,6 +26,10 @@ var getDistanceFromValue = function() {
 var getAmountOfStars = function() {
     // Creates number of stars based on overall rating
     // Blocked on getting value out
+    var starAmount = 4;
+    for(var i =0;i <= starAmount;i++) {
+
+    }
 };
 
 var createRouteCardSkeleton = function(object) {
@@ -39,9 +43,9 @@ var createRouteCardSkeleton = function(object) {
     var dbRatingRef = object.val().rating;
     var dbReviewsRef = object.val().raters;
 
-    var dbLengthRef = object.val().distance;
     var dbTimeRef = object.val().duration;
-
+    var dbLengthRef = object.val().distance.toFixed(2);
+    
     var dbUserIdRef = object.val().userID;
 
     var divRouteContainer = document.createElement('div');
