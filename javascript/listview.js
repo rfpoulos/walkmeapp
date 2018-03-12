@@ -1,7 +1,17 @@
-var getTitleValue = function(title) {
-    var dbTitleRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/title');
-    dbTitleRef.on('value', snap => title.textContent = snap.val());
-};
+var body = document.querySelector('body');
+
+var createListView = function () {
+    var dbRoutes = firebase.database().ref('routes');
+    dbRoutes.on('value', function(data){
+        data.forEach(function(child){
+            var routeCard = createRouteCardSkeleton(child);
+            body.appendChild(routeCard);
+
+        })
+    })
+}
+
+createListView();
 
 var getDistanceFromValue = function(selector) {
     // This function will need to calculate distance
@@ -17,12 +27,6 @@ var getAmountOfStars = function() {
     // var dbRatingRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/rating');
     // dbRatingRef.on('value', snap => reviewsSelector.textContent = snap.val());
 
-};
-
-var getNumberOfReviewsValue = function(reviews) {
-    // Filled with placeholder values
-    var dbReviewsRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/reviews');
-    dbReviewsRef.on('value', snap => reviews.textContent = snap.val() + ' Reviews');
 };
 
 var getAddressValue = function(address) {
@@ -56,73 +60,70 @@ var getLengthAndTime = function(timeAndLength) {
     });
 };
 
-var getUserIdValue = function(user) {
-    var dbRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/userID');
-    dbRef.on('value', snap => user.innerText = snap.val());
-};
+var createRouteCardSkeleton = function(object) {
+    var dbTitleRef = object.val().title;
+    var dbDistanceFromRef = 1.2; // placeholder value
 
-var createRouteCardSkeleton = function() {
-    //Creates route-container div
-    var body = document.querySelector('body');
+    var dbAddressRef = object.val().address;
+    var dbCityRef = object.val().city;
+    var dbStateRef = object.val().state;
+
+    var dbRatingRef = object.val().rating;
+    var dbReviewsRef = object.val().reviews;
+
+    var dbLengthRef = object.val().length;
+    var dbTimeRef = object.val().time;
+
+    var dbUserIdRef = object.val().userID;
+
     var divRouteContainer = document.createElement('div');
     divRouteContainer.setAttribute("class", "route-container");
-    body.appendChild(divRouteContainer);
 
-    //Creates image-section div appened to route-container div
-    var containerSelector = document.querySelector('.route-container');
     var divImageSection = document.createElement('div');
     divImageSection.setAttribute("class", "image-section");
-    containerSelector.appendChild(divImageSection);
+    divRouteContainer.appendChild(divImageSection);
 
-    //Creates info-section div appened to route-container div
     var divInfoSection = document.createElement('div');
     divInfoSection.setAttribute("class", "info-section");
-    containerSelector.appendChild(divInfoSection);
+    divRouteContainer.appendChild(divInfoSection);
 
-    //Appends user img to image-section
-    var imageSectionSelector = document.querySelector('.image-section');
     var imgTag = document.createElement('img');
     imgTag.setAttribute('src', 'images/griff.jpg');
     imgTag.setAttribute('class', 'user-image');
-    imageSectionSelector.appendChild(imgTag);
+    divImageSection.appendChild(imgTag);
 
-    //Appends favorite icon to image-section
     var imgTag = document.createElement('img');
     imgTag.setAttribute('src', 'images/fav.png');
     imgTag.setAttribute('class', 'favorite-on');
-    imageSectionSelector.appendChild(imgTag);
+    divImageSection.appendChild(imgTag);
 
-    //Appends row containers to info section
-    var infoSectionSelector = document.querySelector('.info-section');
     var divTitleAndDistance = document.createElement('div');
     divTitleAndDistance.setAttribute("class", "title-and-distancefrom");
-    infoSectionSelector.appendChild(divTitleAndDistance);
+    divInfoSection.appendChild(divTitleAndDistance);
 
     var divReviews = document.createElement('div');
     divReviews.setAttribute("class", "reviews");
-    infoSectionSelector.appendChild(divReviews);
+    divInfoSection.appendChild(divReviews);
 
     var divAddress = document.createElement('div');
     divAddress.setAttribute("class", "address");
-    infoSectionSelector.appendChild(divAddress);
+    divInfoSection.appendChild(divAddress);
 
     var divRouteTimeAndLength = document.createElement('div');
     divRouteTimeAndLength.setAttribute("class", "route-time-and-length");
-    infoSectionSelector.appendChild(divRouteTimeAndLength);
+    divInfoSection.appendChild(divRouteTimeAndLength);
 
     var divContributer = document.createElement('div');
     divContributer.setAttribute("class", "contributer");
-    infoSectionSelector.appendChild(divContributer);
+    divInfoSection.appendChild(divContributer);
 
-    var titleAndDistanceSelector = document.querySelector('.title-and-distancefrom');
     var divRouteTitle = document.createElement('div');
     divRouteTitle.setAttribute("class", "route-title");
-    titleAndDistanceSelector.appendChild(divRouteTitle);
+    divTitleAndDistance.appendChild(divRouteTitle);
 
-    var distanceSelector = document.querySelector('.distancefrom-number');
     var divDistanceFrom = document.createElement('div');
     divDistanceFrom.setAttribute("class", "distancefrom");
-    titleAndDistanceSelector.appendChild(divDistanceFrom);
+    divTitleAndDistance.appendChild(divDistanceFrom);
 
     var divDistanceIcon = document.createElement('div');
     divDistanceIcon.setAttribute("class", "distancefrom-icon");
@@ -137,7 +138,6 @@ var createRouteCardSkeleton = function() {
     divDistanceNumber.setAttribute("class", "distancefrom-number");
     divDistanceFrom.appendChild(divDistanceNumber);
 
-    var ratingAndReviewsSelector = document.querySelector('.reviews');
     var divReviewStars = document.createElement('div');
     divReviewStars.setAttribute("class", "review-stars");
     var imgReviewStars = document.createElement('img');
@@ -177,24 +177,9 @@ var createRouteCardSkeleton = function() {
     divContributerName.setAttribute('class', 'contributer-name');
     divContributer.appendChild(divContributerName);
 
-    var reviewsSelector = ratingAndReviewsSelector.querySelector('.number-of-reviews');
-    var userSelector = divContributer.querySelector('.contributer-name');
-    var titleSelector = titleAndDistanceSelector.querySelector('.route-title');
-    var addressSelector = document.querySelector('.address-info');
-    var lengthAndTimeSelector = document.querySelector('.time-and-length-info');
-    var distanceFromSelector = document.querySelector('.distancefrom-number');
-
-    getTitleValue(titleSelector);
-    getDistanceFromValue(distanceFromSelector); 
-    // getAmountOfStars();
-    getNumberOfReviewsValue(reviewsSelector);
-    getAddressValue(addressSelector);
-    getLengthAndTime(lengthAndTimeSelector); 
-    getUserIdValue(userSelector);
-
+    return divRouteContainer;
 };
 
-createRouteCardSkeleton();
 
 
 
