@@ -23,13 +23,55 @@ var getDistanceFromValue = function() {
     // between tour and user location in the future
 };
 
-var getAmountOfStars = function() {
-    // Creates number of stars based on overall rating
-    // Blocked on getting value out
-    // var starAmount = 4;
-    // for(var i =0;i <= starAmount;i++) {
-
-    // }
+var getAmountOfStars = function(div) {
+    var starAmount = 3;
+    var imgReviewStars1 = document.createElement('img');
+    imgReviewStars1.setAttribute('class', 'stars');
+    var imgReviewStars2 = document.createElement('img');
+    imgReviewStars2.setAttribute('class', 'stars');
+    var imgReviewStars3 = document.createElement('img');
+    imgReviewStars3.setAttribute('class', 'stars');
+    var imgReviewStars4 = document.createElement('img');
+    imgReviewStars4.setAttribute('class', 'stars');
+    var imgReviewStars5 = document.createElement('img');
+    imgReviewStars5.setAttribute('class', 'stars');
+    
+    if (starAmount === 1) {
+        imgReviewStars1.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars2.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars3.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars4.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    } else if (starAmount === 2) {
+        imgReviewStars1.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars2.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars3.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars4.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    } else if (starAmount === 3) {
+        imgReviewStars1.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars2.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars3.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars4.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    } else if (starAmount === 4) {
+        imgReviewStars1.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars2.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars3.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars4.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    } else if (starAmount === 5) {
+        imgReviewStars1.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars2.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars3.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars4.setAttribute('src', 'images/fullstar.png');
+        imgReviewStars5.setAttribute('src', 'images/fullstar.png');
+    }    
+    div.appendChild(imgReviewStars1);
+    div.appendChild(imgReviewStars2);
+    div.appendChild(imgReviewStars3);
+    div.appendChild(imgReviewStars4);
+    div.appendChild(imgReviewStars5);
 };
 
 var createRouteCardSkeleton = function(object) {
@@ -114,11 +156,9 @@ var createRouteCardSkeleton = function(object) {
 
     var divReviewStars = document.createElement('div');
     divReviewStars.setAttribute("class", "review-stars");
-    var imgReviewStars = document.createElement('img');
-    imgReviewStars.setAttribute('src', 'images/fullstar.png');
-    imgReviewStars.setAttribute('class', 'stars');
     divReviews.appendChild(divReviewStars);
-    divReviewStars.appendChild(imgReviewStars);
+
+    getAmountOfStars(divReviewStars);
 
     var divNumberOfReviews = document.createElement('div');
     divNumberOfReviews.setAttribute("class", "number-of-reviews");
