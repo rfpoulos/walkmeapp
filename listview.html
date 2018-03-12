@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/listview.css">
 </head>
 <body>
-        <div id="modal">
+        <div id="listview" class="viewable-on"></div>
+        <div id="modal" class="viewable-off">
                 <div class="container_modal">
                         <div class="detail">
                             <img id="user-image">
@@ -30,9 +31,9 @@
                             </div>
                         </div>
                         <div class="options">
-                            <button type="input">Navigate</button>
-                            <button type="input">Save to Favorites</button>
-                            <button type="input">Return to List</button>
+                            <button type="button" class="back-to-nav">Navigate</button>
+                            <button type="button" class="back-to-fav">Save to Favorites</button>
+                            <button type="button" class="back-to-list">Return to List</button>
                         </div>
                         <div id="map">
                         </div>
@@ -57,7 +58,7 @@
 
 
                     </script>
-                    <script src="javascript/listview.js"></script>
-                    <script src="javascript/detail.js"></script>
+                    <script src="javascript/detail_and_listview.js"></script>
+                    
 </body>
 </html>

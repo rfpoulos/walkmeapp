@@ -165,7 +165,6 @@
     }
 
     #modal {
-        display: block;
         height: 100%;
         width: 100%;
     }
@@ -256,6 +255,14 @@
         font-weight: 400;
         color: #525151;
         list-style: none;
+    }
+
+    .viewable-on {
+        display: auto;
+    }
+
+    .viewable-off {
+        display: none;
     }
     
     @media (max-width: 600px) {
