@@ -163,3 +163,7 @@
     .contributer-icon {
         margin-left:1px;
     }
+
+    .viewable-off {
+        display: none;
+    }

@@ -1,12 +1,19 @@
-var body = document.querySelector('body');
+var listViewSelector = document.getElementById('listview')
+var detailViewSelector = document.getElementById('detail')
+var objectId = '';
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
             var routeCard = createRouteCardSkeleton(child);
-            body.appendChild(routeCard);
-
+            listViewSelector.appendChild(routeCard);
+            routeCard.addEventListener('click', function(){
+                listViewSelector.className = "viewable-off";
+                objectId = child.key;
+                console.log(objectId)
+                detailViewSelector.className = "viewable-on"
+            })
         })
     })
 }
