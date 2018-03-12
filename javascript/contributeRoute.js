@@ -15,12 +15,14 @@ var state = document.querySelector("[name='walk_state']");
 var description = document.querySelector("[name='contributer_description']");
 var thumbnail = document.querySelector("[name='contributer_thumbnail']");
 var mapContainer = document.querySelector(".map");
+var reviewButton = document.getElementById('review');
 var localRoute;
 var localRouteRef;
 var map;
 
 var geoURL = function(str, cty, ste) {
-    var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste + '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
+    var geoURLResponse = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + str + ',' + cty + ',' + ste +
+                            '&key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0';
     return geoURLResponse;
 }
 
@@ -38,24 +40,31 @@ var initMap = function(location, title, content, zoomLevel) {
     return map;
 }
 
+var titleContentDOM = function(title, content) {
+    var poiContainer = document.createElement('div');
+
+    var contentDiv = document.createElement('h4');
+    contentDiv.classList.add('poi-content');
+    contentDiv.textContent = content;
+
+    var titleDiv = document.createElement('h2');
+    titleDiv.classList.add('poi-title');
+    titleDiv.textContent = title;
+
+    poiContainer.appendChild(titleDiv);
+    poiContainer.appendChild(contentDiv);
+
+    return poiContainer;
+}
+
 var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
         title: poiTitle.value,
     });
-    var poiContainer = document.createElement('div');
 
-    var contentDiv = document.createElement('h4');
-    contentDiv.classList.add('poi-content');
-    contentDiv.textContent = poiContent;
-
-    var titleDiv = document.createElement('h2');
-    titleDiv.classList.add('poi-title');
-    titleDiv.textContent = poiTitle;
-
-    poiContainer.appendChild(titleDiv);
-    poiContainer.appendChild(contentDiv);
+    var poiContainer = titleContentDOM(poiTitle, poiContent);
 
     var infowindow = new google.maps.InfoWindow({
         content: poiContainer.innerHTML,
@@ -73,8 +82,8 @@ var adjustMap = function(locationsArray){
     map.fitBounds(bounds);
 }
 
-var getGeoLocation = function(googleUrl) {
-    return fetch(googleUrl, {
+var getGeoLocation = function(distanceURL) {
+    return fetch(distanceURL, {
     })
     .then(function(response){
         return response.json();
@@ -118,11 +127,12 @@ var recordWalk = function(event) {
             "thumbnail": thumbnail.value,
             "startLocation": data,
             "public": false,
+            "distance": null,
             "pois": [{
                 "location": data,
                 "title": startTitle.value,
                 "content": startContent.value,
-            },]
+            }]
         };
         var walkObject = fireBaseRoutes.push()
         walkObject.set(currentWalk);
@@ -133,5 +143,44 @@ var recordWalk = function(event) {
     })
 };
 
+var calcRoute = function(pois) {
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+
+    newWaypoints = [];
+    for (var i = 1; i < pois.length - 1; i++) {
+        newWaypoints.push({
+            location: pois[i]['location'],
+            stopover: true,
+        })
+    };
+
+    var request = {
+      origin: pois[0]['location'],
+      destination: pois[pois.length - 1]['location'],
+      travelMode: 'WALKING',
+      waypoints: newWaypoints,
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+    };
+    directionsService.route(request, function(result, status) {
+        var totalDistance = 0;
+        if (status == 'OK') {
+            directionsDisplay.setDirections(result);
+            result['routes'][0]['legs'].forEach(function(element){
+                totalDistance += element['distance']['value'];
+            })
+        }
+        localRoute['distance'] = metersToMiles(totalDistance);
+        fireBaseRef.ref('routes/' + localRouteRef['key'] + '/distance').set(localRoute['distance']);
+    });
+}
+var metersToMiles = function(number) {
+    return number / 1609.344;
+}
+
 walkForm.addEventListener("submit", recordWalk);
 poiForm.addEventListener("submit", addPOI);
+reviewButton.addEventListener("click", function() {
+    calcRoute(localRoute['pois']);
+});

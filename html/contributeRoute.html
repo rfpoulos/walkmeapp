@@ -39,9 +39,7 @@
             <label for="thumbnail">Walk thumbnail URL:</label>
             <input type="text" id="thumbnail" name="contributer_thumbnail">
         </div>  
-        <div class="button">
-            <button type="submit">Submit your walk!</button>
-        </div>
+         <button type="submit">Submit your walk!</button>
     </form>
     <form data-poi="form">
         <div>
@@ -52,11 +50,10 @@
             <label for="poi_content">Content</label>
             <textarea id="location_content" name="poi_content"></textarea>
         </div>
-        <div class="button">
-            <button type="submit">Add point of interest</button>
-        </div>
+        <button type="submit">Add point of interest</button>
     </form>
     <div class='map'></div>
+    <button type="input" id="review">Review walk and submit.</button>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
     // Initialize Firebase
