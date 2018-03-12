@@ -11,53 +11,14 @@ var createListView = function () {
     })
 }
 
-createListView();
-
-var getDistanceFromValue = function(selector) {
+var getDistanceFromValue = function() {
     // This function will need to calculate distance
     // between tour and user location in the future
-    var calculateDistance = '1.2 mi';
-    selector.textContent = calculateDistance;
 };
 
 var getAmountOfStars = function() {
     // Creates number of stars based on overall rating
     // Blocked on getting value out
-
-    // var dbRatingRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/rating');
-    // dbRatingRef.on('value', snap => reviewsSelector.textContent = snap.val());
-
-};
-
-var getAddressValue = function(address) {
-    var dbAddressRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/address');
-    var dbCityRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/city');
-    var dbStateRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/state');
-
-    dbAddressRef.on('value', function(snapshot) {
-        address.textContent = snapshot.val();
-        address.textContent += '\r\n';
-    });
-    dbCityRef.on('value', function(snapshot) {
-        address.textContent += snapshot.val();
-        address.textContent += ', ';
-    });
-    dbStateRef.on('value', snap => address.textContent += snap.val());
-};
-
-var getLengthAndTime = function(timeAndLength) {
-    // Filled with placeholder values
-    var dbLengthRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/length');
-    var dbTimeRef = firebase.database().ref('routes/-L7Aa3dtKeXFFX8SLOTF/time');
-    
-    dbLengthRef.on('value', function(snapshot) {
-        timeAndLength.textContent = snapshot.val();
-        timeAndLength.textContent += ' mins / ';
-    });
-    dbTimeRef.on('value', function(snapshot) {
-        timeAndLength.textContent += snapshot.val();
-        timeAndLength.textContent += ' mi';
-    });
 };
 
 var createRouteCardSkeleton = function(object) {
@@ -119,6 +80,7 @@ var createRouteCardSkeleton = function(object) {
 
     var divRouteTitle = document.createElement('div');
     divRouteTitle.setAttribute("class", "route-title");
+    divRouteTitle.textContent = dbTitleRef;
     divTitleAndDistance.appendChild(divRouteTitle);
 
     var divDistanceFrom = document.createElement('div');
@@ -136,6 +98,7 @@ var createRouteCardSkeleton = function(object) {
 
     var divDistanceNumber = document.createElement('div');
     divDistanceNumber.setAttribute("class", "distancefrom-number");
+    divDistanceNumber.textContent = dbDistanceFromRef + ' mi';
     divDistanceFrom.appendChild(divDistanceNumber);
 
     var divReviewStars = document.createElement('div');
@@ -148,6 +111,7 @@ var createRouteCardSkeleton = function(object) {
 
     var divNumberOfReviews = document.createElement('div');
     divNumberOfReviews.setAttribute("class", "number-of-reviews");
+    divNumberOfReviews.textContent = dbReviewsRef + " Reviews";
     divReviews.appendChild(divNumberOfReviews);
 
     var imgPlaceIcon = document.createElement('img');
@@ -157,6 +121,8 @@ var createRouteCardSkeleton = function(object) {
 
     var divAddressInfo = document.createElement('div');
     divAddressInfo.setAttribute('class', 'address-info');
+    divAddressInfo.textContent = dbAddressRef + '\r\n';
+    divAddressInfo.textContent += dbCityRef + ", " + dbStateRef;
     divAddress.appendChild(divAddressInfo);
 
     var imgRouteIcon = document.createElement('img');
@@ -166,6 +132,7 @@ var createRouteCardSkeleton = function(object) {
 
     var divTimeAndLengthInfo = document.createElement('div');
     divTimeAndLengthInfo.setAttribute('class', 'time-and-length-info');
+    divTimeAndLengthInfo.textContent = dbTimeRef + " mins / " + dbLengthRef + " mi";
     divRouteTimeAndLength.appendChild(divTimeAndLengthInfo);
 
     var imgContributerIcon = document.createElement('img');
@@ -175,10 +142,14 @@ var createRouteCardSkeleton = function(object) {
 
     var divContributerName = document.createElement('div');
     divContributerName.setAttribute('class', 'contributer-name');
+    divContributerName.textContent = dbUserIdRef;
     divContributer.appendChild(divContributerName);
 
     return divRouteContainer;
 };
+
+createListView();
+
 
 
 
