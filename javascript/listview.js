@@ -30,10 +30,10 @@ var createRouteCardSkeleton = function(object) {
     var dbStateRef = object.val().state;
 
     var dbRatingRef = object.val().rating;
-    var dbReviewsRef = object.val().reviews;
+    var dbReviewsRef = object.val().raters;
 
-    var dbLengthRef = object.val().length;
-    var dbTimeRef = object.val().time;
+    var dbLengthRef = object.val().distance;
+    var dbTimeRef = object.val().duration;
 
     var dbUserIdRef = object.val().userID;
 
