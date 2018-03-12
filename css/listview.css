@@ -22,7 +22,7 @@
     }
     .image-section {
         display: flex;
-        background-color: aqua;
+        /* background-color: aqua; */
         min-width: 120px;
         max-height: 130px;
         
@@ -126,6 +126,7 @@
         font-family: 'Helvetica Neue';
         font-size: 13px;
         margin-left: 8px;
+        white-space: pre;
     }
     .route-time-and-length {
         display:flex;
@@ -155,7 +156,7 @@
         /* background-color: rgb(255, 194, 102); */
     }
 
-    .contributer-info {
+    .contributer-name {
         margin-left: 9px;
     }
 
