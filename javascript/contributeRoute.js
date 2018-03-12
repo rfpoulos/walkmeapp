@@ -17,7 +17,6 @@ var thumbnail = document.querySelector("[name='contributer_thumbnail']");
 var mapContainer = document.querySelector(".map");
 var reviewButton = document.getElementById('review');
 var localRoute;
-var localRouteRef;
 var map;
 
 var geoURL = function(str, cty, ste) {
@@ -106,7 +105,6 @@ var addPOI = function(event) {
             "content": poiContent.value,
         }
         localRoute['pois'].push(currentPOI);
-        fireBaseRef.ref('routes/' + localRouteRef['key'] + '/pois').set(localRoute['pois']);
         adjustMap(localRoute['pois']);
         addPOIMarker(data, currentPOI['title'], currentPOI['content']);
         poiForm.reset();
@@ -135,9 +133,6 @@ var recordWalk = function(event) {
                 "content": startContent.value,
             }]
         };
-        var walkObject = fireBaseRoutes.push()
-        walkObject.set(currentWalk);
-        localRouteRef = walkObject;
         localRoute = currentWalk;
         initMap(data, startTitle.value, startContent.value, 15);
         walkForm.reset();
@@ -176,9 +171,13 @@ var calcRoute = function(pois) {
         }
         localRoute['distance'] = metersToMiles(totalDistance);
         localRoute['duration'] = secondsToMinutes(totalTime);
-        fireBaseRef.ref('routes/' + localRouteRef['key']).set(localRoute);
     });
 }
+
+var saveWalktoFirebase = function(walk) {
+    fireBaseRoutes.push().set(walk);
+}
+
 var metersToMiles = function(number) {
     return number / 1609.344;
 }
@@ -190,4 +189,5 @@ walkForm.addEventListener("submit", recordWalk);
 poiForm.addEventListener("submit", addPOI);
 reviewButton.addEventListener("click", function() {
     calcRoute(localRoute['pois']);
+    saveWalktoFirebase(localRoute);
 });
