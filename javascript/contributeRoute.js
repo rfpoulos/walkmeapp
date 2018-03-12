@@ -168,7 +168,6 @@ var calcRoute = function(pois) {
         var totalDistance = 0;
         var totalTime = 0;
         if (status == 'OK') {
-            console.log(result);
             directionsDisplay.setDirections(result);
             result['routes'][0]['legs'].forEach(function(element){
                 totalDistance += element['distance']['value'];
