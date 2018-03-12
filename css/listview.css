@@ -1,14 +1,10 @@
-    html,body {
+    html, body {
         width:100%;
         height:100%;
         margin:0px;
         padding:0px;
     }
-
-    body {
-        display: flex;
-        flex-wrap: wrap;
-    }
+    
     .route-container {
         display:flex;
         /* background-color: blanchedalmond; */
@@ -179,10 +175,9 @@
         align-self: flex-start;
     }
     
-    .container {
-        display: flex;
-        font-family: 'Helvetica Neue';
-        flex-direction: column;
+    .container_modal {
+        height: 100%;
+        width: 100%;
     }
     
     #title {
@@ -190,16 +185,11 @@
         align-items: center;
     }
     
-    
-    #mapImg { 
-        width: 100%;
-    }
-    
     .detail {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        align-content: center;
         justify-content: center;
-        width: 100%;
     }
     
     .options {
@@ -225,17 +215,24 @@
         background: #fafafa;
         cursor: pointer;
     }
-    
+    .image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .list {
+
+    }
     #user-image {
-        width: 70%;
-        align-self: center;
-        padding: 1%;
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
     }
     
     .info {
         display: flex;
         flex-direction: row;
-        width: 30%;
+        justify-content: center;
         padding: 1%;
     }
     
@@ -266,14 +263,6 @@
     }
     
     @media (max-width: 600px) {
-        .detail {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #user-image {
-            width: 70%;
-        }
     
         .info {
             display: flex;
