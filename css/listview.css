@@ -35,7 +35,7 @@
     }
 
     #listview {
-        margin-top: 9%;
+        margin-top: 16%;
         flex-flow: row wrap;
         justify-content: space-around;
     }
@@ -310,6 +310,25 @@
 
     .viewable-off {
         display: none;
+    }
+
+    .bottom-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .home {
+        display:flex;
+        margin-left:20px;
+        margin-top:1em;
+    }
+    .directory {
+        display:flex;
+    }
+    .add {
+        display:flex;
+        margin-right: 20px;
     }
     
     @media (max-width: 600px) {
