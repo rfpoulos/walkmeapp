@@ -139,7 +139,8 @@ var recordWalk = function(event) {
         };
         localRoute = currentWalk;
         walkForm.reset();
-        poiForm.addEventListener("submit", addPOI);
+        poiForm.addEventListener("click", addPOI);
+        walkForm.removeEventListener("click", recordWalk);
 };
 
 var calcRoute = function(pois) {
@@ -212,7 +213,7 @@ fileButton.addEventListener('change', function(e) {
   );
 });
 
-walkForm.addEventListener("submit", recordWalk);
+walkForm.addEventListener("click", recordWalk);
 reviewButton.addEventListener("click", function() {
     calcRoute(localRoute['pois']);
 });
