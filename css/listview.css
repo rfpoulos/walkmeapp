@@ -324,7 +324,7 @@
     .home {
         display:flex;
         margin-left:20px;
-        margin-top:2em;
+        margin-top:.5em;
     }
     .directory {
         display:flex;
@@ -332,6 +332,15 @@
     .add {
         display:flex;
         margin-right: 20px;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 35px;
+        font-family: 'Nanum Pen Script', cursive;
+        color: black;
+       
+
     }
     
     @media (max-width: 600px) { 
@@ -346,7 +355,7 @@
 
         .home {
             margin-left:20px;
-            margin-top:1em;
+            margin-top:.1em;
         }
 
         .add {
