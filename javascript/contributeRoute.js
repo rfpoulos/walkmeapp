@@ -125,8 +125,6 @@ var checkForUserUpload = function(value) {
 
 var recordWalk = function(event) {
     event.preventDefault();
-    // var mapLocation = getGeoLocation(geoURL(address.value, city.value, state.value));
-    // mapLocation.then(function(data){
         var currentWalk = {
             "userID": userID.value,
             "title": title.value,
@@ -141,7 +139,7 @@ var recordWalk = function(event) {
         };
         localRoute = currentWalk;
         walkForm.reset();
-    // })
+        poiForm.addEventListener("submit", addPOI);
 };
 
 var calcRoute = function(pois) {
@@ -189,12 +187,6 @@ var metersToMiles = function(number) {
 var secondsToMinutes = function(number) {
     return Math.round(number / 60);
 }
-
-walkForm.addEventListener("submit", recordWalk);
-poiForm.addEventListener("submit", addPOI);
-reviewButton.addEventListener("click", function() {
-    calcRoute(localRoute['pois']);
-});
 //image uploader
 var uploader = document.getElementById('uploader');
 var fileButton = document.getElementById('thumbnail');
@@ -206,7 +198,6 @@ fileButton.addEventListener('change', function(e) {
     var storageRef = firebase.storage().ref('test/' + file.name);
     //upload
     var task = storageRef.put(file);
-
     task.on('state_changed', 
       function progress(snapshot) {
           var percentage = (snapshot.bytesTransferred / 
@@ -217,7 +208,11 @@ fileButton.addEventListener('change', function(e) {
 
   },
   function complete() {
-
   }
   );
+});
+
+walkForm.addEventListener("submit", recordWalk);
+reviewButton.addEventListener("click", function() {
+    calcRoute(localRoute['pois']);
 });
