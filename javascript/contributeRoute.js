@@ -2,16 +2,13 @@ var fireBaseRef = firebase.database();
 var fireBaseRoutes = fireBaseRef.ref('routes');
 var walkForm = document.querySelector("[data-walk='form']");
 var poiForm = document.querySelector("[data-poi='form']");
-var poiAddress = document.querySelector("[name='next-poi']");
-var poiTitle = document.querySelector("[name='poi_title']");
-var poiContent = document.querySelector("[name='poi_content']");
-var startTitle = document.querySelector("[name='start_title']");
-var startContent = document.querySelector("[name='start_content']");
+var poiAddress = document.querySelector("[name='poi-address']");
+var poiTitle = document.querySelector("[name='poi-title']");
+var poiContent = document.querySelector("[name='poi-content']");
 var userID = document.querySelector("[name='user']");
 var title = document.querySelector("[name='contributer_title']");
-var address = document.querySelector("[name='start_address']");
-var city = document.querySelector("[name='walk_city']");
-var state = document.querySelector("[name='walk_state']");
+var poiCity = document.querySelector("[name='poi-city']");
+var poiState = document.querySelector("[name='poi-state']");
 var description = document.querySelector("[name='contributer_description']");
 var thumbnail = document.querySelector("[name='contributer_thumbnail']");
 var mapContainer = document.querySelector(".map");
@@ -97,48 +94,54 @@ var getGeoLocation = function(distanceURL) {
 
 var addPOI = function(event) {
     event.preventDefault();
-    var markerLocation = getGeoLocation(geoURL(poiAddress.value, localRoute['city'], localRoute['state']));
+    var markerLocation = getGeoLocation(geoURL(poiAddress.value, poiCity.value, poiState.value));
     markerLocation.then(function(data){
         currentPOI = {
             "location": data,
             "title": poiTitle.value,
             "content": poiContent.value,
         }
-        localRoute['pois'].push(currentPOI);
-        adjustMap(localRoute['pois']);
-        addPOIMarker(data, currentPOI['title'], currentPOI['content']);
+        if (localRoute['pois'] === null) {
+            localRoute['pois'] = [];
+            localRoute['pois'].push(currentPOI);
+            initMap(currentPOI['location'], currentPOI['title'], currentPOI['content'], 15);
+        } else{
+            localRoute['pois'].push(currentPOI);
+            adjustMap(localRoute['pois']);
+            addPOIMarker(data, currentPOI['title'], currentPOI['content']);
+        }
         poiForm.reset();
         });
     };
 
+var checkForUserUpload = function(value) {
+    if (value) {
+        return (value).match(/[-_\w]+[.][\w]+$/i)[0]
+    }
+    else{
+        return null;
+    }
+}
+
 var recordWalk = function(event) {
     event.preventDefault();
-    var mapLocation = getGeoLocation(geoURL(address.value, city.value, state.value));
-    mapLocation.then(function(data){
+    // var mapLocation = getGeoLocation(geoURL(address.value, city.value, state.value));
+    // mapLocation.then(function(data){
         var currentWalk = {
             "userID": userID.value,
             "title": title.value,
-            "address": address.value,
-            "city": city.value,
-            "state": state.value,
             "description": description.value,
-            "thumbnail": (thumbnail.value).match(/[-_\w]+[.][\w]+$/i)[0],
-            "startLocation": data,
+            "thumbnail": checkForUserUpload(thumbnail.value),
             "public": false,
             "distance": null,
             "duration": null,
             "rating": 0,
             "raters": 0,
-            "pois": [{
-                "location": data,
-                "title": startTitle.value,
-                "content": startContent.value,
-            }]
+            "pois": null,
         };
         localRoute = currentWalk;
-        initMap(data, startTitle.value, startContent.value, 15);
         walkForm.reset();
-    })
+    // })
 };
 
 var calcRoute = function(pois) {
