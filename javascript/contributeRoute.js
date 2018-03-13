@@ -208,21 +208,9 @@ fileButton.addEventListener('change', function(e) {
 
   },
   function complete() {
-
   }
   );
 });
-
-var preview_image = function(event) 
-{
- var reader = new FileReader();
- reader.onload = function()
- {
-  var output = document.getElementById('output_image');
-  output.src = reader.result;
- }
- reader.readAsDataURL(event.target.files[0]);
-}
 
 walkForm.addEventListener("submit", recordWalk);
 reviewButton.addEventListener("click", function() {
