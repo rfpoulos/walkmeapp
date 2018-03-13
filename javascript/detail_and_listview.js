@@ -1,7 +1,6 @@
 var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
 var objectId = '';
-var mapContainer = document.querySelector(".map");
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -160,6 +159,9 @@ var createRouteCardSkeleton = function(object) {
     return divRouteContainer;
 };
 
+
+var mapContainer = document.querySelector(".map");
+var map;
 var makeDetailView = function(id) {
     var fireBaseObject = firebase.database().ref('routes/' + id);
 
@@ -170,12 +172,11 @@ var makeDetailView = function(id) {
     var docState = document.getElementById('state');
     var docUserId = document.getElementById('userId');
     var userImage = document.getElementById('user-image');
-
-    var navigate = document.getElementById('navigate');
+    var navigate = document.querySelector('.back-to-nav');
     var returnBtnSelector = document.querySelector(".back-to-list");
+    var ratingSubmit = document.querySelector("[name='submit-rating']");
 
     fireBaseObject.on("value", function(snapshot) {
-        var map;
         docTitle.textContent = snapshot.val()['title'];
         docDesc.textContent = snapshot.val()['description'];
         docAddress.textContent = snapshot.val()['address'];
@@ -186,10 +187,16 @@ var makeDetailView = function(id) {
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
         initMap(startLocation, pois, 15);
+        adjustMap(pois);
         // getWalkerLocation();
-        navigate.addEventListener("click", function(){
+        navigate.addEventListener("click", function(event){
+            event.preventDefault();
             openGoogleMaps(pois);
         }); 
+        ratingSubmit.addEventListener("submit", function(){
+            fireBaseObject.off();
+            addRating(walkObject);
+        });
     });
 
     returnBtnSelector.addEventListener('click', function() {
@@ -197,7 +204,15 @@ var makeDetailView = function(id) {
         detailViewSelector.className = "viewable-off"
     })
 }
-
+var addRating = function(walkObject) {
+    var checked = document.querySelector("[name='rating']:checked");
+    checkedRating = parseInt(checked.value);
+    var localWalk = walkObject;
+    localWalk['rating'] = localWalk['rating'] + checkedRating;
+    localWalk['raters'] = localWalk['raters'] + 1;
+    walkObject = localWalk;
+    fireBaseObject.set(walkObject);
+}
 var adjustMap = function(locationsArray){
     var bounds = new google.maps.LatLngBounds();
     locationsArray.forEach(function(element){
@@ -214,7 +229,6 @@ var initMap = function(location, pois, zoomLevel) {
     pois.forEach(function(element){
         addPOIMarker(element['location'], element['title'], element['content']);
     })
-    adjustMap(pois);
     google.maps.event.addListener(map, function() {
         addPOIMarker();
         fitBounds();
@@ -262,7 +276,6 @@ var openGoogleMaps = function(pois) {
     for (var i = 2; i < pois.length; i++) {
         googleUrl = googleUrl + '+to:' + pois[i]['location']['lat'] + ',' + pois[i]['location']['lng'];
     }
-    console.log(googleUrl);
     var win = window.open(googleUrl);
     win.focus();
 }
