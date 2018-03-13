@@ -8,11 +8,11 @@ var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
-            var routeCard = createRouteCardSkeleton(child, walkerLocation);
+            var objectId = child.key;
+            var routeCard = createRouteCardSkeleton(child, objectId, walkerLocation);
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
-                var objectId = child.key;
                 makeDetailView(objectId);
                 detailViewSelector.className = "viewable-on"
             })
@@ -20,8 +20,19 @@ var createListView = function () {
     })
 }
 
-var getAmountOfStars = function(div) {
-    var starAmount = 3;
+var getAmountOfStars = function(div, id) {
+    var starAmount;
+    var fireBaseObject = firebase.database().ref('routes/' + id);
+    fireBaseObject.on('value', function(snapshot) {
+        var rating = parseInt(snapshot.val()['rating']);
+        var raters = parseInt(snapshot.val()['raters']);
+        if (rating && raters !== false) {
+            console.log(raters);
+            starAmount = parseInt(Math.floor(rating/raters));
+        } else {
+            starAmount = 0;
+        }
+    });
     var imgReviewStars1 = document.createElement('img');
     imgReviewStars1.setAttribute('class', 'stars');
     var imgReviewStars2 = document.createElement('img');
@@ -33,7 +44,13 @@ var getAmountOfStars = function(div) {
     var imgReviewStars5 = document.createElement('img');
     imgReviewStars5.setAttribute('class', 'stars');
     
-    if (starAmount === 1) {
+    if (starAmount === 0) {
+        imgReviewStars1.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars2.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars3.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars4.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    }   else if (starAmount === 1) {
         imgReviewStars1.setAttribute('src', 'images/fullstar.png');
         imgReviewStars2.setAttribute('src', 'images/emptystar.png');
         imgReviewStars3.setAttribute('src', 'images/emptystar.png');
@@ -71,7 +88,7 @@ var getAmountOfStars = function(div) {
     div.appendChild(imgReviewStars5);
 };
 
-var createRouteCardSkeleton = function(object, walkerLoc) {
+var createRouteCardSkeleton = function(object, id, walkerLoc) {
     var dbTitleRef = object.val().title;
     var walkerLocationTemp = new google.maps.LatLng(32.7590136, -84.3296775);
     var dbStartLocationRef = new google.maps.LatLng(object.val().startLocation.lat,object.val().startLocation.lng);
@@ -157,10 +174,13 @@ var createRouteCardSkeleton = function(object, walkerLoc) {
     divReviewStars.setAttribute("class", "review-stars");
     divReviews.appendChild(divReviewStars);
 
-    getAmountOfStars(divReviewStars);
+    getAmountOfStars(divReviewStars, id);
 
     var divNumberOfReviews = document.createElement('div');
     divNumberOfReviews.setAttribute("class", "number-of-reviews");
+    if (dbReviewsRef===undefined) {
+        dbReviewsRef = 0;  
+  };
     divNumberOfReviews.textContent = dbReviewsRef + " Reviews";
     divReviews.appendChild(divNumberOfReviews);
 
