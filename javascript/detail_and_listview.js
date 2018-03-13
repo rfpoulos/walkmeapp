@@ -20,17 +20,6 @@ var createListView = function () {
     })
 }
 
-var getDistanceFromValue = function(walkerLoc, routeLoc, div) {
-    var divDistanceNumber = document.createElement('div');
-    divDistanceNumber.setAttribute("class", "distancefrom-number");
-    console.log(walkerLoc);
-    console.log(routeLoc);
-    distanceFrom = 1.2;
-    // var distanceFrom = google.maps.geometry.spherical.computeDistanceBetween(walkerLoc, routeLoc);
-    divDistanceNumber.textContent = distanceFrom + ' mi';
-    div.appendChild(divDistanceNumber);
-};
-
 var getAmountOfStars = function(div) {
     var starAmount = 3;
     var imgReviewStars1 = document.createElement('img');
@@ -82,15 +71,10 @@ var getAmountOfStars = function(div) {
     div.appendChild(imgReviewStars5);
 };
 
-var createRouteCardSkeleton = function(object,walkLoc) {
-    var walkerLocation = {
-        lat: 33.7590136,
-        lng: -84.3296775,
-        }
-    // var walkerLocation = new google.maps.LatLng(33.7590136, -122.214897);
+var createRouteCardSkeleton = function(object, walkerLoc) {
     var dbTitleRef = object.val().title;
-    var dbStartLocationRef = object.val().startLocation;
-
+    var walkerLocationTemp = new google.maps.LatLng(32.7590136, -84.3296775);
+    var dbStartLocationRef = new google.maps.LatLng(object.val().startLocation.lat,object.val().startLocation.lng);
 
     var dbAddressRef = object.val().address;
     var dbCityRef = object.val().city;
@@ -163,11 +147,12 @@ var createRouteCardSkeleton = function(object,walkLoc) {
     imgDistanceIcon.setAttribute("src", "images/nearme.png");
     divDistanceIcon.appendChild(imgDistanceIcon);
 
-    getDistanceFromValue(walkerLocation,dbStartLocationRef,divDistanceFrom);
+    var divDistanceNumber = document.createElement('div');
+    divDistanceNumber.setAttribute("class", "distancefrom-number");
+    var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
+    divDistanceNumber.textContent = (distanceFromValue*= 0.000621371192).toFixed(0) + ' mi';
+    divDistanceFrom.appendChild(divDistanceNumber);
     
-    // divDistanceNumber.textContent = distanceFrom + ' mi';
-    // divDistanceFrom.appendChild(divDistanceNumber);
-
     var divReviewStars = document.createElement('div');
     divReviewStars.setAttribute("class", "review-stars");
     divReviews.appendChild(divReviewStars);
@@ -351,6 +336,7 @@ var getWalkerLocation = function() {
 }
 
 createListView();
+
 
 
 
