@@ -16,6 +16,7 @@
         width: 100%;
         height: 9%;
         box-shadow: 0px -17px 16px 17px rgba(0,0,0,0.29);
+        z-index: 4;
     }
     .nav-title {
         width: 200px;
@@ -29,11 +30,14 @@
         width: 100%;
         bottom: 0%;
         height: 9%;
+        z-index: 4;
 
     }
 
     #listview {
-        margin-top: 90px;
+        margin-top: 9%;
+        flex-flow: row wrap;
+        justify-content: space-around;
     }
     .container_modal {
         margin-top: 90px;
@@ -117,6 +121,7 @@
     .nearme {
         margin-top:2px;
         width:15px;
+        z-index: 4;
     }
 
     .distancefrom-number {
@@ -203,7 +208,7 @@
     
     .map {
         height: 50%;
-        margin: 1em;
+        margin: 1em 1em 5em 1em;
     }
     .rating {
         display: flex;
@@ -277,7 +282,7 @@
     .info {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-around;
         padding: 1%;
     }
     
@@ -300,7 +305,7 @@
     }
 
     .viewable-on {
-        display: inline;
+        display: flex;
     }
 
     .viewable-off {
