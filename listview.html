@@ -6,11 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WalkMe</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
     <link rel="stylesheet" href="css/listview.css">
 </head>
 <body>
         <div id="top-nav"><img src="images/walkme-nav.png" class="nav-title"></div>
-        <div id="listview" class="viewable-on"></div>
+        <div id="landingpage" class="viewable-on">
+            <img src="images/street.png" class="landing-image">
+        </div>
+        <div id="listview" class="viewable-off"></div>
         <div id="modal" class="viewable-off">
                 <div class="container_modal">
                     <div class="detail">
@@ -50,7 +54,13 @@
                     </div>
                 </div>
         </div>
-        <div id="bottom-nav">Favorites|Search|Add</div>
+        <div id="bottom-nav">
+            <div class="bottom-menu">
+                <a class="home">HOME</a>
+                <a class="directory">DIRECTORY</a>
+                <a class="add">ADD</a>
+            </div>
+        </div>
                     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
                     <script>
                     // Initialize Firebase
