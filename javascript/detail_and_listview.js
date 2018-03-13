@@ -354,7 +354,29 @@ var getWalkerLocation = function() {
         })
     }
 }
+var navClickEvents = function() {
+    var landingPageSelector = document.getElementById('landingpage')
+    var home = document.querySelector('.home')
+    home.addEventListener('click', function(){
+        listViewSelector.className = "viewable-off";
+        detailViewSelector.className = "viewable-off";
+        landingPageSelector.className = "viewable-on";
+    })
+    var directory = document.querySelector('.directory')
+    directory.addEventListener('click', function(){
+        listViewSelector.className = "viewable-on";
+        detailViewSelector.className = "viewable-off";
+        landingPageSelector.className = "viewable-off";
+    })
+    var add = document.querySelector('.add')
+    add.addEventListener('click', function(){
+        listViewSelector.className = "viewable-off";
+        detailViewSelector.className = "viewable-off";
+        landingPageSelector.className = "viewable-off";
+    })
+};
 
+navClickEvents();
 createListView();
 
 
