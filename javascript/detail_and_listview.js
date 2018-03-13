@@ -2,13 +2,14 @@ var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
 var mapContainer = document.querySelector(".map");
 var map;
-var walkerLocation = null;
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
-            var routeCard = createRouteCardSkeleton(child);
+            console.log(child);
+            var objectId = child.key;
+            var routeCard = createRouteCardSkeleton(child, objectId);
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
@@ -25,8 +26,19 @@ var getDistanceFromValue = function() {
     // between tour and user location in the future
 };
 
-var getAmountOfStars = function(div) {
-    var starAmount = 3;
+var getAmountOfStars = function(div, id) {
+    var starAmount;
+    var fireBaseObject = firebase.database().ref('routes/' + id);
+    fireBaseObject.on('value', function(snapshot) {
+        var rating = parseInt(snapshot.val()['rating']);
+        var raters = parseInt(snapshot.val()['raters']);
+        if (rating && raters !== false) {
+            console.log(raters);
+            starAmount = parseInt(Math.floor(rating/raters));
+        } else {
+            starAmount = 0;
+        }
+    });
     var imgReviewStars1 = document.createElement('img');
     imgReviewStars1.setAttribute('class', 'stars');
     var imgReviewStars2 = document.createElement('img');
@@ -37,8 +49,13 @@ var getAmountOfStars = function(div) {
     imgReviewStars4.setAttribute('class', 'stars');
     var imgReviewStars5 = document.createElement('img');
     imgReviewStars5.setAttribute('class', 'stars');
-    
-    if (starAmount === 1) {
+    if (starAmount === 0) {
+        imgReviewStars1.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars2.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars3.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars4.setAttribute('src', 'images/emptystar.png');
+        imgReviewStars5.setAttribute('src', 'images/emptystar.png');
+    }   else if (starAmount === 1) {
         imgReviewStars1.setAttribute('src', 'images/fullstar.png');
         imgReviewStars2.setAttribute('src', 'images/emptystar.png');
         imgReviewStars3.setAttribute('src', 'images/emptystar.png');
@@ -75,8 +92,7 @@ var getAmountOfStars = function(div) {
     div.appendChild(imgReviewStars4);
     div.appendChild(imgReviewStars5);
 };
-
-var createRouteCardSkeleton = function(object) {
+var createRouteCardSkeleton = function(object, id) {
     var dbTitleRef = object.val().title;
     var dbDistanceFromRef = 1.2; // placeholder value
 
@@ -148,7 +164,7 @@ var createRouteCardSkeleton = function(object) {
 
     var imgDistanceIcon = document.createElement('img');
     imgDistanceIcon.setAttribute("class", "nearme");
-    imgDistanceIcon.setAttribute("src", "images/nearme.png");
+    imgDistanceIcon.setAttribute("src", "walkmeapp/images/nearme.png");
     divDistanceIcon.appendChild(imgDistanceIcon);
 
     var divDistanceNumber = document.createElement('div');
@@ -160,15 +176,18 @@ var createRouteCardSkeleton = function(object) {
     divReviewStars.setAttribute("class", "review-stars");
     divReviews.appendChild(divReviewStars);
 
-    getAmountOfStars(divReviewStars);
+    getAmountOfStars(divReviewStars, id);
 
     var divNumberOfReviews = document.createElement('div');
     divNumberOfReviews.setAttribute("class", "number-of-reviews");
+    if (dbReviewsRef===undefined) {
+      dbReviewsRef = 0;  
+};
     divNumberOfReviews.textContent = dbReviewsRef + " Reviews";
     divReviews.appendChild(divNumberOfReviews);
 
     var imgPlaceIcon = document.createElement('img');
-    imgPlaceIcon.setAttribute('src', 'images/place_small.png');
+    imgPlaceIcon.setAttribute('src', 'walkmeapp/images/place_small.png');
     imgPlaceIcon.setAttribute('class', 'place-icon');
     divAddress.appendChild(imgPlaceIcon);
 
@@ -179,7 +198,7 @@ var createRouteCardSkeleton = function(object) {
     divAddress.appendChild(divAddressInfo);
 
     var imgRouteIcon = document.createElement('img');
-    imgRouteIcon.setAttribute('src', 'images/route_small.png');
+    imgRouteIcon.setAttribute('src', 'walkmeapp/images/route_small.png');
     imgRouteIcon.setAttribute('class', 'route-icon');
     divRouteTimeAndLength.appendChild(imgRouteIcon);
 
@@ -189,7 +208,7 @@ var createRouteCardSkeleton = function(object) {
     divRouteTimeAndLength.appendChild(divTimeAndLengthInfo);
 
     var imgContributerIcon = document.createElement('img');
-    imgContributerIcon.setAttribute('src', 'images/contributer_small.png');
+    imgContributerIcon.setAttribute('src', 'walkmeapp/images/contributer_small.png');
     imgContributerIcon.setAttribute('class', 'contributer-icon');
     divContributer.appendChild(imgContributerIcon);
 
@@ -226,15 +245,9 @@ var makeDetailView = function(id) {
         userImage.src = snapshot.val()['thumbnail'];
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
-        if (walkerLocation !== null){
-            pois.pop({
-                location: walkerLocation,
-                title: 'You are here!',
-                content: '',
-            });
-        }
-        initMap(pois[0]['location'], pois, 15);
+        initMap(startLocation, pois, 15);
         adjustMap(pois);
+        getWalkerLocation(pois);
         navigate.addEventListener("click", function(event){
             event.preventDefault();
             openGoogleMaps(pois);
@@ -278,7 +291,7 @@ var initMap = function(location, pois, zoomLevel) {
     })
     google.maps.event.addListener(map, function() {
         addPOIMarker();
-        adjustMap();
+        fitBounds();
         });
         
     return map;
@@ -327,19 +340,27 @@ var openGoogleMaps = function(pois) {
     win.focus();
 }
 
-var getWalkerLocation = function() {
+var getWalkerLocation = function(pois) {
+    infoWindow = new google.maps.InfoWindow;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-        walkerLocation = {
+        var pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-            }
-        })
+        };
+        var localPosArray = pois;
+        localPosArray.push({location: pos,});
+        addPOIMarker(pos, 'You are here', '');
+        adjustMap(localPosArray);
+        }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        handleLocationError(false, infoWindow, map.getCenter());
     }
 }
 
 createListView();
-getWalkerLocation();
 
 
 
