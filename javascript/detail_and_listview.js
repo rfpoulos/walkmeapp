@@ -1,6 +1,7 @@
-var listViewSelector = document.getElementById('listview')
-var detailViewSelector = document.getElementById('modal')
+var listViewSelector = document.getElementById('listview');
+var detailViewSelector = document.getElementById('modal');
 var objectId = '';
+var mapContainer = document.querySelector(".map");
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -209,11 +210,9 @@ var makeDetailView = function(id) {
     var docState = document.getElementById('state');
     var docUserId = document.getElementById('userId');
     var userImage = document.getElementById('user-image');
-    var mapContainer = document.querySelector(".map");
 
     var navigate = document.getElementById('navigate');
     var returnBtnSelector = document.querySelector(".back-to-list");
-
 
     fireBaseObject.on("value", function(snapshot) {
         var map;
@@ -227,8 +226,7 @@ var makeDetailView = function(id) {
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
         initMap(startLocation, pois, 15);
-        adjustMap(pois);
-        getWalkerLocation();
+        // getWalkerLocation();
         navigate.addEventListener("click", function(){
             openGoogleMaps(pois);
         }); 
@@ -255,7 +253,13 @@ var initMap = function(location, pois, zoomLevel) {
     });
     pois.forEach(function(element){
         addPOIMarker(element['location'], element['title'], element['content']);
-    });
+    })
+    adjustMap(pois);
+    google.maps.event.addListener(map, function() {
+        addPOIMarker();
+        fitBounds();
+        });
+        
     return map;
 }
 
@@ -280,8 +284,11 @@ var addPOIMarker = function(poi, poiTitle, poiContent) {
     var marker = new google.maps.Marker({
         position: poi,
         map: map,
+        title: poiTitle.value,
     });
+
     var poiContainer = titleContentDOM(poiTitle, poiContent);
+
     var infowindow = new google.maps.InfoWindow({
         content: poiContainer.innerHTML,
       });

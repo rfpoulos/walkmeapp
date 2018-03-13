@@ -13,24 +13,31 @@
         <div id="listview" class="viewable-on"></div>
         <div id="modal" class="viewable-off">
                 <div class="container_modal">
-                        <div class="detail">
+                    <div class="detail">
+                        <div class="image-container">
                             <img id="user-image">
-                            <div class="info">
-                                <div class="summary">
-                                    <h1 id="title"></h1>
-                                    <p id="description">
-                                    </p>
-                                    <ul>
-                                        <li id="distance"></li>
-                                        <li id="rating"></li>
-                                        <li id="address"></li>
-                                        <li id="city"></li>
-                                        <li id="state"></li>
-                                        <li id="userId"></li>
-                                    </ul>
+                        </div>
+                        <div class="info">
+                            <div class="summary">
+                                <h1 id="title"></h1>
+                                <p id="description">
+                                </p>
+                                <ul class="list">
+                                    <li id="distance"></li>
+                                    <li id="rating"></li>
+                                    <li id="address"></li>
+                                    <li id="city"></li>
+                                    <li id="state"></li>
+                                    <li id="userId"></li>
+                                </ul>
+                                <div class="options">
+                                    <button type="button" class="back-to-nav">Navigate</button>
+                                    <button type="button" class="back-to-fav">Save to Favorites</button>
+                                    <button type="button" class="back-to-list">Return to List</button>
                                 </div>
                             </div>
                         </div>
+
                         <div class="options">
                             <button type="button" class="back-to-nav">Navigate</button>
                             <button type="button" class="back-to-fav">Save to Favorites</button>
@@ -55,12 +62,10 @@
                         messagingSenderId: "829716536506"
                     };
                     firebase.initializeApp(config);
-                    
-                    
-
-
                     </script>
                     <script src="javascript/detail_and_listview.js"></script>
-                    
+                    <script async defer
+                          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
+                    </script>  
 </body>
 </html>
