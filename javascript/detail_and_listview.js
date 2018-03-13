@@ -17,16 +17,17 @@ var createListView = function () {
                 detailViewSelector.className = "viewable-on"
             })
         })
+        getWalkerLocation();
     })
 }
-var clsElements = document.getElementsByClassName("route-container");
 var updateDistanceTo = function(allCards, location){
-    var dbStartLocationRef = new google.maps.LatLng(parseInt(allCards[i].getAttribute("start-lat")), parseInt(allCards[i].getAttribute("start-lat")));
+    var walkerLocationTemp = new google.maps.LatLng(location['lat'], location['lng']);
     for(var i = 0; i < allCards.length; i++) {
-        var walkerLocationTemp = new google.maps.LatLng(location['lat'], location['lng']);
+        console.log(parseFloat(allCards[i].getAttribute("start-lng")));
+        var dbStartLocationRef = new google.maps.LatLng(parseFloat(allCards[i].getAttribute("start-lat")), parseFloat(allCards[i].getAttribute("start-lat")));
         var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
         var currentElement = allCards[i].getElementsByClassName('distancefrom');
-        currentElement[0].childNodes[1].textContent = (distanceFromValue*= 0.000621371192).toFixed(0) + ' mi';
+        currentElement[0].childNodes[1].textContent = (distanceFromValue / 1609.344).toFixed(0) + ' mi';
     }
 }
 
@@ -251,13 +252,14 @@ var makeDetailView = function(id) {
         userImage.src = snapshot.val()['thumbnail'];
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
-        if (walkerLocation !== null){
-            pois.pop({
+        if (walkerLocation) {
+            pois.unshift({
                 location: walkerLocation,
                 title: 'You are here!',
                 content: '',
-            });
+            })
         }
+        console.log(pois)
         initMap(pois[0]['location'], pois, 15);
         adjustMap(pois);
         navigate.addEventListener("click", function(event){
@@ -359,12 +361,11 @@ var getWalkerLocation = function() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
             }
+        var clsElements = document.getElementsByClassName("route-container");
         updateDistanceTo(clsElements, walkerLocation);
         })
     }
 }
-
-getWalkerLocation();
 createListView();
 
 
