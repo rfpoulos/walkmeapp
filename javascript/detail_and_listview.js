@@ -1,5 +1,7 @@
 var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
+var mapContainer = document.querySelector(".map");
+var map;
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -158,12 +160,8 @@ var createRouteCardSkeleton = function(object) {
     return divRouteContainer;
 };
 
-
-var mapContainer = document.querySelector(".map");
-var map;
 var makeDetailView = function(id) {
     var fireBaseObject = firebase.database().ref('routes/' + id);
-
     var docTitle = document.getElementById('title');
     var docDesc = document.getElementById('description');
     var docAddress = document.getElementById('address');
@@ -194,9 +192,9 @@ var makeDetailView = function(id) {
             event.preventDefault();
             openGoogleMaps(pois);
         }); 
-        ratingSubmit.addEventListener("submit", function(event){
+        ratingSubmit.addEventListener("click", function(event){
             event.preventDefault();
-            addRating(walkObject);
+            addRating(walkObject, fireBaseObject);
         });
     });
 
@@ -205,13 +203,14 @@ var makeDetailView = function(id) {
         detailViewSelector.className = "viewable-off"
     })
 }
-var addRating = function(walkObject) {
+var addRating = function(walkObject, database) {
     var checked = document.querySelector("[name='rating']:checked");
     checkedRating = parseInt(checked.value);
     var localWalk = walkObject;
     localWalk['rating'] = localWalk['rating'] + checkedRating;
     localWalk['raters'] = localWalk['raters'] + 1;
-    fireBaseObject.set(localWalk);
+    database.set(localWalk);
+    console.log(walkObject);
 }
 var adjustMap = function(locationsArray){
     var bounds = new google.maps.LatLngBounds();
