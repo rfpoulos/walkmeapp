@@ -127,6 +127,8 @@ var recordWalk = function(event) {
             "public": false,
             "distance": null,
             "duration": null,
+            "rating": 0,
+            "raters": 0,
             "pois": [{
                 "location": data,
                 "title": startTitle.value,
