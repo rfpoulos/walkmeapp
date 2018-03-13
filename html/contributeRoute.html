@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type='text/javascript'>
+        function preview_image(event) 
+        {
+         var reader = new FileReader();
+         reader.onload = function()
+         {
+          var output = document.getElementById('output_image');
+          output.src = reader.result;
+         }
+         reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
     <link rel="stylesheet" type="text/css" href="../css/contributeRoute.css">
     <title>WalkMe</title>
 </head>
@@ -15,7 +27,10 @@
                     <input type="text" id="title" name="contributer_title" maxlength="12" placeholder='Title: 12 character max'>
                     <textarea id="description" name="contributer_description" placeholder='Walk description'></textarea>
                     <label for="thumbnail">Walk image</label>
-                    <input type="file" value="upload" id="thumbnail" name="contributer_thumbnail">
+                    <input type="file" value="upload" id="thumbnail" name="contributer_thumbnail" onchange="preview_image(event)">
+                    <div class="output_container">
+                        <img id="output_image"/>
+                    </div>
                     <progress value="0" max="100" id="uploader">0%</progress>
                     <button type="submit">Submit your walk!</button>
                 </div>  
