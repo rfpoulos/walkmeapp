@@ -122,7 +122,7 @@ var recordWalk = function(event) {
             "city": city.value,
             "state": state.value,
             "description": description.value,
-            "thumbnail": thumbnail.value,
+            "thumbnail": (thumbnail.value).match(/[-_\w]+[.][\w]+$/i)[0],
             "startLocation": data,
             "public": false,
             "distance": null,
