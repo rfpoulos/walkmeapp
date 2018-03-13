@@ -8,43 +8,35 @@
     <title>WalkMe</title>
 </head>
 <body>
-    <form data-walk="form">
-        <div>
-            <label for="user-id">User ID:</label>
-            <input type="text" id="user_id" name="user">
-        </div>  
-        <div>
-            <label for="tite">Walk title:</label>
-            <input type="text" id="title" name="contributer_title">
-        </div>
-        <div>
-            <label for="description">Walk description:</label>
-            <textarea id="description" name="contributer_description"></textarea>
-        </div>
-        <div>
-            <label for="thumbnail">Walk image</label>
-            <input type="file" value="upload" id="thumbnail" name="contributer_thumbnail">
-            <progress value="0" max="100" id="uploader">0%</progress>
-        </div>  
-         <button type="submit">Submit your walk!</button>
-    </form>
-    <form data-poi="form">
-        <div>
-            <label for="next_location">Next point of interest address:</label>
-            <input type="text" id="next_location" name="poi-address">
-            <label for="city">City:</label>
-            <input type="text" id="city" name="poi-city">
-            <label for="state">State:</label>
-            <input type="text" id="state" name="poi-state">
-            <label for="start-title">Title</label>
-            <input type="text" id="start-title" name="poi-title">
-            <label for="start-content">Content</label>
-            <textarea id="start-content" name="poi-content"></textarea>
-        </div>
-        <button type="submit">Add point of interest</button>
-    </form>
+    <div class="form-container">
+            <form data-walk="form">
+                <div class="walk">
+                    <input type="text" id="user_id" name="user" placeholder='User name'>
+                    <input type="text" id="title" name="contributer_title" maxlength="12" placeholder='Title: 12 character max'>
+                    <textarea id="description" name="contributer_description" placeholder='Walk description'></textarea>
+                    <label for="thumbnail">Walk image</label>
+                    <input type="file" value="upload" id="thumbnail" name="contributer_thumbnail">
+                    <progress value="0" max="100" id="uploader">0%</progress>
+                    <button type="submit">Submit your walk!</button>
+                </div>  
+            </form>
+            <form data-poi="form">
+                <div class="walk">
+                    <input type="text" id="next_location" name="poi-address" placeholder='POI street address'>
+                    <div class="citystate">
+                        <input type="text" id="city" name="poi-city" placeholder='city'>
+                        <input type="text" id="state" name="poi-state" placeholder='state' maxlength="2">
+                    </div class="walk">
+                    <input type="text" id="start-title" name="poi-title" placeholder='POI title'>
+                    <textarea id="start-content" name="poi-content" placeholder='POI Description'></textarea>
+                    <button type="submit">Add point of interest</button>
+                </div>
+            </form>
+    </div>
     <div class='map'></div>
-    <button type="input" id="review">Review walk and submit.</button>
+    <div class="review">
+        <button type="input" id="review">Review walk and submit.</button>
+    </div>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
     // Initialize Firebase
