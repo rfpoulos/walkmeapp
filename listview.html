@@ -30,22 +30,25 @@
                                     <li id="state"></li>
                                     <li id="userId"></li>
                                 </ul>
-                                <div class="options">
-                                    <button type="button" class="back-to-nav">Navigate</button>
-                                    <button type="button" class="back-to-fav">Save to Favorites</button>
-                                    <button type="button" class="back-to-list">Return to List</button>
-                                </div>
+                                <form class="rating" data-rating="form">
+                                        <input type="radio" name="rating" value="1">1
+                                        <input type="radio" name="rating" value="2">2
+                                        <input type="radio" name="rating" value="3" checked>3
+                                        <input type="radio" name="rating" value="4">4
+                                        <input type="radio" name="rating" value="5">5
+                                        <button type="submit" name="submit-rating">Rate this walk!</button>
+                                </form>
                             </div>
                         </div>
-
                         <div class="options">
-                            <button type="button" class="back-to-nav">Navigate</button>
-                            <button type="button" class="back-to-fav">Save to Favorites</button>
-                            <button type="button" class="back-to-list">Return to List</button>
+                                <button type="button" class="back-to-nav">Navigate</button>
+                                <button type="button" class="back-to-fav">Save to Favorites</button>
+                                <button type="button" class="back-to-list">Return to List</button>
                         </div>
-                        <div id="map">
-                        </div>
-                    </div> </div>
+                    </div>
+                    <div class="map">
+                    </div>
+                </div>
         <div id="bottom-nav">Favorites|Search|Add</div>
                     <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">

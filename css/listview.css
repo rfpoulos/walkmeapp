@@ -205,7 +205,11 @@
         height: 50%;
         margin: 1em;
     }
-
+    .rating {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
     h1 {
         font-family: 'Roboto', 'san-serif';
         align-self: flex-start;
@@ -231,12 +235,13 @@
         flex-direction: column;
         align-content: center;
         justify-content: center;
+        margin: 1em;
     }
     
     .options {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
     }
     
     button {
@@ -261,9 +266,7 @@
         align-items: center;
         justify-content: center;
     }
-    .list {
 
-    }
     #user-image {
         object-fit: contain;
         max-width: 100%;

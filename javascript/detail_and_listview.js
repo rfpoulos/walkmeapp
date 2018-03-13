@@ -1,7 +1,7 @@
 var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
-var objectId = '';
 var mapContainer = document.querySelector(".map");
+var map;
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -11,7 +11,7 @@ var createListView = function () {
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
-                objectId = child.key;
+                var objectId = child.key;
                 makeDetailView(objectId);
                 detailViewSelector.className = "viewable-on"
             })
@@ -202,7 +202,6 @@ var createRouteCardSkeleton = function(object) {
 
 var makeDetailView = function(id) {
     var fireBaseObject = firebase.database().ref('routes/' + id);
-
     var docTitle = document.getElementById('title');
     var docDesc = document.getElementById('description');
     var docAddress = document.getElementById('address');
@@ -210,12 +209,13 @@ var makeDetailView = function(id) {
     var docState = document.getElementById('state');
     var docUserId = document.getElementById('userId');
     var userImage = document.getElementById('user-image');
-
-    var navigate = document.getElementById('navigate');
+    var navigate = document.querySelector('.back-to-nav');
     var returnBtnSelector = document.querySelector(".back-to-list");
+    var ratingSubmit = document.querySelector("[name='submit-rating']");
+    var ratingForm = document.querySelector("[data-rating='form']")
 
     fireBaseObject.on("value", function(snapshot) {
-        var map;
+        var walkObject = snapshot.val();
         docTitle.textContent = snapshot.val()['title'];
         docDesc.textContent = snapshot.val()['description'];
         docAddress.textContent = snapshot.val()['address'];
@@ -226,10 +226,16 @@ var makeDetailView = function(id) {
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
         initMap(startLocation, pois, 15);
-        // getWalkerLocation();
-        navigate.addEventListener("click", function(){
+        adjustMap(pois);
+        getWalkerLocation(pois);
+        navigate.addEventListener("click", function(event){
+            event.preventDefault();
             openGoogleMaps(pois);
         }); 
+        ratingSubmit.addEventListener("click", function(event){
+            event.preventDefault();
+            addRating(walkObject, fireBaseObject);
+        });
     });
 
     returnBtnSelector.addEventListener('click', function() {
@@ -237,7 +243,15 @@ var makeDetailView = function(id) {
         detailViewSelector.className = "viewable-off"
     })
 }
-
+var addRating = function(walkObject, database) {
+    var checked = document.querySelector("[name='rating']:checked");
+    checkedRating = parseInt(checked.value);
+    var localWalk = walkObject;
+    localWalk['rating'] = localWalk['rating'] + checkedRating;
+    localWalk['raters'] = localWalk['raters'] + 1;
+    database.set(localWalk);
+    console.log(walkObject);
+}
 var adjustMap = function(locationsArray){
     var bounds = new google.maps.LatLngBounds();
     locationsArray.forEach(function(element){
@@ -254,7 +268,6 @@ var initMap = function(location, pois, zoomLevel) {
     pois.forEach(function(element){
         addPOIMarker(element['location'], element['title'], element['content']);
     })
-    adjustMap(pois);
     google.maps.event.addListener(map, function() {
         addPOIMarker();
         fitBounds();
@@ -302,20 +315,22 @@ var openGoogleMaps = function(pois) {
     for (var i = 2; i < pois.length; i++) {
         googleUrl = googleUrl + '+to:' + pois[i]['location']['lat'] + ',' + pois[i]['location']['lng'];
     }
-    console.log(googleUrl);
     var win = window.open(googleUrl);
     win.focus();
 }
 
-var getWalkerLocation = function() {
+var getWalkerLocation = function(pois) {
     infoWindow = new google.maps.InfoWindow;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
         var pos = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
         };
+        var localPosArray = pois;
+        localPosArray.push({location: pos,});
         addPOIMarker(pos, 'You are here', '');
+        adjustMap(localPosArray);
         }, function() {
         handleLocationError(true, infoWindow, map.getCenter());
         });
