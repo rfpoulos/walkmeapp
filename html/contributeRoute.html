@@ -10,16 +10,13 @@
 <body>
     <form data-walk="form">
         <div>
-            <label for="user-id">User ID:</label>
-            <input type="text" id="user_id" name="user">
+            <input type="text" id="user_id" name="user" placeholder='User name'>
         </div>  
         <div>
-            <label for="tite">Walk title:</label>
-            <input type="text" id="title" name="contributer_title" maxlength="12">
+            <input type="text" id="title" name="contributer_title" maxlength="12" placeholder='Title: 12 character max'>
         </div>
         <div>
-            <label for="description">Walk description:</label>
-            <textarea id="description" name="contributer_description"></textarea>
+            <textarea id="description" name="contributer_description" placeholder='Walk description'></textarea>
         </div>
         <div>
             <label for="thumbnail">Walk image</label>
@@ -30,16 +27,13 @@
     </form>
     <form data-poi="form">
         <div>
-            <label for="next_location">Next point of interest address:</label>
-            <input type="text" id="next_location" name="poi-address">
-            <label for="city">City:</label>
-            <input type="text" id="city" name="poi-city">
-            <label for="state">State:</label>
-            <input type="text" id="state" name="poi-state">
-            <label for="start-title">Title</label>
-            <input type="text" id="start-title" name="poi-title">
-            <label for="start-content">Content</label>
-            <textarea id="start-content" name="poi-content"></textarea>
+            <input type="text" id="next_location" name="poi-address" placeholder='Point of interest street address'>
+            <div>
+                <input type="text" id="city" name="poi-city" placeholder='city'>
+                <input type="text" id="state" name="poi-state" placeholder='state'><br>
+            </div>
+            <input type="text" id="start-title" name="poi-title" placeholder='POI title'><br>
+            <textarea id="start-content" name="poi-content" placeholder='POI Description'></textarea>
         </div>
         <button type="submit">Add point of interest</button>
     </form>
