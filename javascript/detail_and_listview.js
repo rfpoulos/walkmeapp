@@ -2,6 +2,7 @@ var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
 var mapContainer = document.querySelector(".map");
 var map;
+var walkerLocation = null;
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -225,9 +226,15 @@ var makeDetailView = function(id) {
         userImage.src = snapshot.val()['thumbnail'];
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
-        initMap(startLocation, pois, 15);
+        if (walkerLocation !== null){
+            pois.pop({
+                location: walkerLocation,
+                title: 'You are here!',
+                content: '',
+            });
+        }
+        initMap(pois[0]['location'], pois, 15);
         adjustMap(pois);
-        getWalkerLocation(pois);
         navigate.addEventListener("click", function(event){
             event.preventDefault();
             openGoogleMaps(pois);
@@ -271,7 +278,7 @@ var initMap = function(location, pois, zoomLevel) {
     })
     google.maps.event.addListener(map, function() {
         addPOIMarker();
-        fitBounds();
+        adjustMap();
         });
         
     return map;
@@ -320,27 +327,19 @@ var openGoogleMaps = function(pois) {
     win.focus();
 }
 
-var getWalkerLocation = function(pois) {
-    infoWindow = new google.maps.InfoWindow;
+var getWalkerLocation = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
+        walkerLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-        };
-        var localPosArray = pois;
-        localPosArray.push({location: pos,});
-        addPOIMarker(pos, 'You are here', '');
-        adjustMap(localPosArray);
-        }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
-        });
-    } else {
-        handleLocationError(false, infoWindow, map.getCenter());
+            }
+        })
     }
 }
 
 createListView();
+getWalkerLocation();
 
 
 
