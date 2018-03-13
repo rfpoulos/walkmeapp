@@ -9,7 +9,7 @@ var createListView = function () {
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
             var objectId = child.key;
-            var routeCard = createRouteCardSkeleton(child, objectId, walkerLocation);
+            var routeCard = createRouteCardSkeleton(child, objectId);
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
@@ -18,6 +18,16 @@ var createListView = function () {
             })
         })
     })
+}
+var clsElements = document.getElementsByClassName("route-container");
+var updateDistanceTo = function(allCards, location){
+    var dbStartLocationRef = new google.maps.LatLng(parseInt(allCards[i].getAttribute("start-lat")), parseInt(allCards[i].getAttribute("start-lat")));
+    for(var i = 0; i < allCards.length; i++) {
+        var walkerLocationTemp = new google.maps.LatLng(location['lat'], location['lng']);
+        var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
+        var currentElement = allCards[i].getElementsByClassName('distancefrom');
+        currentElement[0].childNodes[1].textContent = (distanceFromValue*= 0.000621371192).toFixed(0) + ' mi';
+    }
 }
 
 var getAmountOfStars = function(div, id) {
@@ -88,25 +98,23 @@ var getAmountOfStars = function(div, id) {
     div.appendChild(imgReviewStars5);
 };
 
-var createRouteCardSkeleton = function(object, id, walkerLoc) {
+var createRouteCardSkeleton = function(object, id) {
     var dbTitleRef = object.val().title;
-    var walkerLocationTemp = new google.maps.LatLng(32.7590136, -84.3296775);
-    var dbStartLocationRef = new google.maps.LatLng(object.val().startLocation.lat,object.val().startLocation.lng);
-
     var dbAddressRef = object.val().address;
     var dbCityRef = object.val().city;
     var dbStateRef = object.val().state;
-
     var dbRatingRef = object.val().rating;
     var dbReviewsRef = object.val().raters;
-
     var dbTimeRef = object.val().duration;
     var dbLengthRef = object.val().distance.toFixed(2);
-    
     var dbUserIdRef = object.val().userID;
+    var startLocation =object.val()['pois'][0]['location'];
 
     var divRouteContainer = document.createElement('div');
     divRouteContainer.setAttribute("class", "route-container");
+    divRouteContainer.setAttribute("start-lat", startLocation['lat']);
+    divRouteContainer.setAttribute("start-lng", startLocation['lng']);
+    divRouteContainer.className = 'route-container';
 
     var divImageSection = document.createElement('div');
     divImageSection.setAttribute("class", "image-section");
@@ -152,7 +160,7 @@ var createRouteCardSkeleton = function(object, id, walkerLoc) {
     divTitleAndDistance.appendChild(divRouteTitle);
 
     var divDistanceFrom = document.createElement('div');
-    divDistanceFrom.setAttribute("class", "distancefrom");
+    divDistanceFrom.className = 'distancefrom';
     divTitleAndDistance.appendChild(divDistanceFrom);
 
     var divDistanceIcon = document.createElement('div');
@@ -165,9 +173,9 @@ var createRouteCardSkeleton = function(object, id, walkerLoc) {
     divDistanceIcon.appendChild(imgDistanceIcon);
 
     var divDistanceNumber = document.createElement('div');
-    divDistanceNumber.setAttribute("class", "distancefrom-number");
-    var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
-    divDistanceNumber.textContent = (distanceFromValue*= 0.000621371192).toFixed(0) + ' mi';
+    divDistanceNumber.className = 'distancefrom-number';
+    
+    divDistanceNumber.textContent = '0';
     divDistanceFrom.appendChild(divDistanceNumber);
     
     var divReviewStars = document.createElement('div');
@@ -351,10 +359,12 @@ var getWalkerLocation = function() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
             }
+        updateDistanceTo(clsElements, walkerLocation);
         })
     }
 }
 
+getWalkerLocation();
 createListView();
 
 
