@@ -54,3 +54,7 @@ form {
   display: flex;
   flex-direction: column;
 }
+.citystate{
+  display: flex;
+  flex-direction: row;
+}
