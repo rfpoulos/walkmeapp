@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test Object</title>
+    <title>WalkMe</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="css/listview.css">
 </head>
 <body>
+        <div id="top-nav"><img src="images/walkme-nav.png" class="nav-title"></div>
         <div id="listview" class="viewable-on"></div>
         <div id="modal" class="viewable-off">
                 <div class="container_modal">
@@ -48,23 +49,26 @@
                     <div class="map">
                     </div>
                 </div>
-            
-    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-    <script>
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyChvgSJwWRcfCZ1m9onBBb3Zyf3dZ5bRYQ",
-        authDomain: "walkme-app-1520459500880.firebaseapp.com",
-        databaseURL: "https://walkme-app-1520459500880.firebaseio.com",
-        projectId: "walkme-app-1520459500880",
-        storageBucket: "",
-        messagingSenderId: "829716536506"
-    };
-    firebase.initializeApp(config);
-    </script>
-    <script src="javascript/detail_and_listview.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
-    </script>
+        <div id="bottom-nav">Favorites|Search|Add</div>
+                    <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
+                 </script>
+                    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+                    <script>
+                    // Initialize Firebase
+                    var config = {
+                        apiKey: "AIzaSyChvgSJwWRcfCZ1m9onBBb3Zyf3dZ5bRYQ",
+                        authDomain: "walkme-app-1520459500880.firebaseapp.com",
+                        databaseURL: "https://walkme-app-1520459500880.firebaseio.com",
+                        projectId: "walkme-app-1520459500880",
+                        storageBucket: "",
+                        messagingSenderId: "829716536506"
+                    };
+                    firebase.initializeApp(config);
+                    </script>
+                    <script src="javascript/detail_and_listview.js"></script>
+                    <script async defer
+                          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFmtGsZQUblhJEuXo9YNrN6pFO_tfiW0">
+                    </script>  
 </body>
 </html>

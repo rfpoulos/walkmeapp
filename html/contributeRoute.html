@@ -36,8 +36,9 @@
             <textarea id="description" name="contributer_description"></textarea>
         </div>
         <div>
-            <label for="thumbnail">Walk thumbnail URL:</label>
-            <input type="text" id="thumbnail" name="contributer_thumbnail">
+            <label for="thumbnail">Walk image</label>
+            <input type="file" value="upload" id="thumbnail" name="contributer_thumbnail">
+            <progress value="0" max="100" id="uploader">0%</progress>
         </div>  
          <button type="submit">Submit your walk!</button>
     </form>
@@ -62,7 +63,7 @@
         authDomain: "walkme-app-1520459500880.firebaseapp.com",
         databaseURL: "https://walkme-app-1520459500880.firebaseio.com",
         projectId: "walkme-app-1520459500880",
-        storageBucket: "",
+        storageBucket: "walkme-app-1520459500880.appspot.com",
         messagingSenderId: "829716536506"
     };
     firebase.initializeApp(config);

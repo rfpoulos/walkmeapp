@@ -193,3 +193,29 @@ poiForm.addEventListener("submit", addPOI);
 reviewButton.addEventListener("click", function() {
     calcRoute(localRoute['pois']);
 });
+//image uploader
+var uploader = document.getElementById('uploader');
+var fileButton = document.getElementById('thumbnail');
+
+fileButton.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    console.log("1 done")
+    //telling firebase where to store the image
+    var storageRef = firebase.storage().ref('test/' + file.name);
+    //upload
+    var task = storageRef.put(file);
+
+    task.on('state_changed', 
+      function progress(snapshot) {
+          var percentage = (snapshot.bytesTransferred / 
+          snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+  },
+  function error(err) {
+
+  },
+  function complete() {
+
+  }
+  );
+});
