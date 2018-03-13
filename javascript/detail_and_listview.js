@@ -8,7 +8,7 @@ var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
-            var routeCard = createRouteCardSkeleton(child);
+            var routeCard = createRouteCardSkeleton(child, walkerLocation);
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
@@ -20,9 +20,15 @@ var createListView = function () {
     })
 }
 
-var getDistanceFromValue = function() {
-    // This function will need to calculate distance
-    // between tour and user location in the future
+var getDistanceFromValue = function(walkerLoc, routeLoc, div) {
+    var divDistanceNumber = document.createElement('div');
+    divDistanceNumber.setAttribute("class", "distancefrom-number");
+    console.log(walkerLoc);
+    console.log(routeLoc);
+    distanceFrom = 1.2;
+    // var distanceFrom = google.maps.geometry.spherical.computeDistanceBetween(walkerLoc, routeLoc);
+    divDistanceNumber.textContent = distanceFrom + ' mi';
+    div.appendChild(divDistanceNumber);
 };
 
 var getAmountOfStars = function(div) {
@@ -76,9 +82,15 @@ var getAmountOfStars = function(div) {
     div.appendChild(imgReviewStars5);
 };
 
-var createRouteCardSkeleton = function(object) {
+var createRouteCardSkeleton = function(object,walkLoc) {
+    var walkerLocation = {
+        lat: 33.7590136,
+        lng: -84.3296775,
+        }
+    // var walkerLocation = new google.maps.LatLng(33.7590136, -122.214897);
     var dbTitleRef = object.val().title;
-    var dbDistanceFromRef = 1.2; // placeholder value
+    var dbStartLocationRef = object.val().startLocation;
+
 
     var dbAddressRef = object.val().address;
     var dbCityRef = object.val().city;
@@ -151,10 +163,10 @@ var createRouteCardSkeleton = function(object) {
     imgDistanceIcon.setAttribute("src", "images/nearme.png");
     divDistanceIcon.appendChild(imgDistanceIcon);
 
-    var divDistanceNumber = document.createElement('div');
-    divDistanceNumber.setAttribute("class", "distancefrom-number");
-    divDistanceNumber.textContent = dbDistanceFromRef + ' mi';
-    divDistanceFrom.appendChild(divDistanceNumber);
+    getDistanceFromValue(walkerLocation,dbStartLocationRef,divDistanceFrom);
+    
+    // divDistanceNumber.textContent = distanceFrom + ' mi';
+    // divDistanceFrom.appendChild(divDistanceNumber);
 
     var divReviewStars = document.createElement('div');
     divReviewStars.setAttribute("class", "review-stars");
@@ -339,7 +351,6 @@ var getWalkerLocation = function() {
 }
 
 createListView();
-getWalkerLocation();
 
 
 
