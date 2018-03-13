@@ -238,11 +238,12 @@ var makeDetailView = function(id) {
         });
     });
 
+
     returnBtnSelector.addEventListener('click', function() {
         listViewSelector.className = "viewable-on";
         detailViewSelector.className = "viewable-off"
     })
-}
+};
 var addRating = function(walkObject, database) {
     var checked = document.querySelector("[name='rating']:checked");
     checkedRating = parseInt(checked.value);

@@ -219,12 +219,13 @@
         display: flex;
         font-family: 'Helvetica Neue';
         flex-direction: column;
-
-    .container_modal {
-        height: 100%;
-        width: 100%;
     }
-    
+
+   .container_modal {
+       height: 100%;
+       width: 100%;
+   }
+   
     #title {
         display: flex;
         align-items: center;
