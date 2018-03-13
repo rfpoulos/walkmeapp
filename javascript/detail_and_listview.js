@@ -1,6 +1,5 @@
 var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
-var objectId = '';
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -10,7 +9,7 @@ var createListView = function () {
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
-                objectId = child.key;
+                var objectId = child.key;
                 makeDetailView(objectId);
                 detailViewSelector.className = "viewable-on"
             })
@@ -175,8 +174,10 @@ var makeDetailView = function(id) {
     var navigate = document.querySelector('.back-to-nav');
     var returnBtnSelector = document.querySelector(".back-to-list");
     var ratingSubmit = document.querySelector("[name='submit-rating']");
+    var ratingForm = document.querySelector("[data-rating='form']")
 
     fireBaseObject.on("value", function(snapshot) {
+        var walkObject = snapshot.val();
         docTitle.textContent = snapshot.val()['title'];
         docDesc.textContent = snapshot.val()['description'];
         docAddress.textContent = snapshot.val()['address'];
@@ -188,13 +189,13 @@ var makeDetailView = function(id) {
         var pois = snapshot.val()['pois'];
         initMap(startLocation, pois, 15);
         adjustMap(pois);
-        // getWalkerLocation();
+        getWalkerLocation(pois);
         navigate.addEventListener("click", function(event){
             event.preventDefault();
             openGoogleMaps(pois);
         }); 
-        ratingSubmit.addEventListener("submit", function(){
-            fireBaseObject.off();
+        ratingSubmit.addEventListener("submit", function(event){
+            event.preventDefault();
             addRating(walkObject);
         });
     });
@@ -210,8 +211,7 @@ var addRating = function(walkObject) {
     var localWalk = walkObject;
     localWalk['rating'] = localWalk['rating'] + checkedRating;
     localWalk['raters'] = localWalk['raters'] + 1;
-    walkObject = localWalk;
-    fireBaseObject.set(walkObject);
+    fireBaseObject.set(localWalk);
 }
 var adjustMap = function(locationsArray){
     var bounds = new google.maps.LatLngBounds();
@@ -280,15 +280,18 @@ var openGoogleMaps = function(pois) {
     win.focus();
 }
 
-var getWalkerLocation = function() {
+var getWalkerLocation = function(pois) {
     infoWindow = new google.maps.InfoWindow;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
         var pos = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
         };
+        var localPosArray = pois;
+        localPosArray.push({location: pos,});
         addPOIMarker(pos, 'You are here', '');
+        adjustMap(localPosArray);
         }, function() {
         handleLocationError(true, infoWindow, map.getCenter());
         });
