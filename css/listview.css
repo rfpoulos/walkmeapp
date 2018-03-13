@@ -169,7 +169,11 @@
         height: 50%;
         margin: 1em;
     }
-
+    .rating {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
     h1 {
         font-family: 'Roboto', 'san-serif';
         align-self: flex-start;
@@ -220,9 +224,7 @@
         align-items: center;
         justify-content: center;
     }
-    .list {
 
-    }
     #user-image {
         object-fit: contain;
         max-width: 100%;
