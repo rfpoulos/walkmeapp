@@ -58,3 +58,8 @@ form {
   display: flex;
   flex-direction: row;
 }
+.review {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
