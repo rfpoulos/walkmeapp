@@ -100,6 +100,9 @@ var addPOI = function(event) {
             "location": data,
             "title": poiTitle.value,
             "content": poiContent.value,
+            "address": poiAddress.value,
+            "city": poiCity.value,
+            "state": poiState.value,
         }
         if (localRoute['pois'] === null) {
             localRoute['pois'] = [];
