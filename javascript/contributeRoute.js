@@ -122,7 +122,7 @@ var checkForUserUpload = function(value) {
         return (value).match(/[-_\w]+[.][\w]+$/i)[0]
     }
     else{
-        return null;
+        return 'scenic-walks1.jpg';
     }
 }
 
