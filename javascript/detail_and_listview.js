@@ -378,8 +378,7 @@ var getWalkerLocation = function() {
         })
     }
 }
-<<<<<<< HEAD
-=======
+
 var navClickEvents = function() {
     var landingPageSelector = document.getElementById('landingpage')
     var home = document.querySelector('.home')
@@ -404,7 +403,6 @@ var navClickEvents = function() {
 
 getWalkerLocation();
 navClickEvents();
->>>>>>> 8a7c7526711fae96379071bfde84201956a82d52
 createListView();
 
 
