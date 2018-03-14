@@ -429,7 +429,6 @@ var getWalkerLocation = function() {
             }
         var clsElements = document.getElementsByClassName("route-container");
         updateDistanceTo(clsElements, walkerLocation);
-        sortFeature('distance');
         })
     }
 }
