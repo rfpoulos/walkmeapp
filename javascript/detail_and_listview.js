@@ -111,7 +111,30 @@ var getAmountOfStars = function(div, id) {
     div.appendChild(imgReviewStars5);
 };
 
+var genImg = function(imageElem, filename) {
+    console.log(filename);
+    var filepath = 'test/' + filename;
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+    storageRef.child(filepath).getDownloadURL().then(function(url) {
+        imageElem.setAttribute('src', url);
+        imageElem.setAttribute('class', 'user-image');
+    }).catch(function(error) {
+        switch (error.code) {
+            case 'storage/object_not_found':
+            break;
+            case 'storage/unauthorized':
+            break;
+            case 'storage/canceled':
+            break;
+            case 'storage/unknown':
+            break;
+    // Handle any errors
+}
+  });
+};
 var createRouteCardSkeleton = function(object, id) {
+    var dbThumbnail = object.val().thumbnail;
     var dbTitleRef = object.val().title;
     var dbAddressRef = object.val().address;
     var dbCityRef = object.val().city;
@@ -138,8 +161,7 @@ var createRouteCardSkeleton = function(object, id) {
     divRouteContainer.appendChild(divInfoSection);
 
     var imgTag = document.createElement('img');
-    imgTag.setAttribute('src', 'images/griff.jpg');
-    imgTag.setAttribute('class', 'user-image');
+    genImg(imgTag, dbThumbnail);
     divImageSection.appendChild(imgTag);
 
     var imgTag = document.createElement('img');
@@ -378,8 +400,6 @@ var getWalkerLocation = function() {
         })
     }
 }
-<<<<<<< HEAD
-=======
 var navClickEvents = function() {
     var landingPageSelector = document.getElementById('landingpage')
     var home = document.querySelector('.home')
@@ -404,7 +424,6 @@ var navClickEvents = function() {
 
 getWalkerLocation();
 navClickEvents();
->>>>>>> 8a7c7526711fae96379071bfde84201956a82d52
 createListView();
 
 
