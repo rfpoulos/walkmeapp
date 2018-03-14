@@ -401,6 +401,7 @@ var getWalkerLocation = function() {
         })
     }
 }
+
 var navClickEvents = function() {
     var landingPageSelector = document.getElementById('landingpage')
     var home = document.querySelector('.home')
