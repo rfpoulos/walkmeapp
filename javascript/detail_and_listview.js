@@ -1,5 +1,6 @@
 var listViewSelector = document.getElementById('listview');
 var detailViewSelector = document.getElementById('modal');
+var contributionsSelector = document.getElementById('addview');
 var mapContainer = document.querySelector(".map");
 var map;
 var walkerLocation = null;
@@ -14,7 +15,7 @@ var createListView = function () {
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
                 makeDetailView(objectId);
-                detailViewSelector.className = "viewable-on"
+                detailViewSelector.className = "viewable-on";
             })
         })
         getWalkerLocation();
