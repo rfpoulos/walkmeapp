@@ -12,7 +12,7 @@ var walkerLocation = null;
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
-    dbRoutes.on('value', function(data){
+    dbRoutes.once('value', function(data){
         data.forEach(function(child){
             var objectId = child.key;
             var routeCard = createRouteCardSkeleton(child, objectId);
@@ -77,12 +77,10 @@ var sortFeature = function (sortBy) {
     return list;
 }
 
-var getAmountOfStars = function(div, id) {
+var getAmountOfStars = function(div, ratings, reviews) {
     var starAmount;
-    var fireBaseObject = firebase.database().ref('routes/' + id);
-    fireBaseObject.on('value', function(snapshot) {
-        var rating = parseInt(snapshot.val()['rating']);
-        var raters = parseInt(snapshot.val()['raters']);
+        var rating = parseInt(ratings);
+        var raters = parseInt(reviews);
         var score = rating / raters;
         if (score === NaN) {
             div.setAttribute("rating", 0);
@@ -94,7 +92,6 @@ var getAmountOfStars = function(div, id) {
         } else {
             starAmount = 0;
         }
-    });
     var imgReviewStars1 = document.createElement('img');
     imgReviewStars1.setAttribute('class', 'stars');
     var imgReviewStars2 = document.createElement('img');
@@ -255,7 +252,7 @@ var createRouteCardSkeleton = function(object, id) {
     divReviewStars.setAttribute("class", "review-stars");
     divReviews.appendChild(divReviewStars);
 
-    getAmountOfStars(divReviewStars, id);
+    getAmountOfStars(divReviewStars, dbRatingRef, dbReviewsRef);
 
     var divNumberOfReviews = document.createElement('div');
     divNumberOfReviews.setAttribute("class", "number-of-reviews");
@@ -313,7 +310,7 @@ var makeDetailView = function(id) {
     var ratingSubmit = document.querySelector("[name='submit-rating']");
     var ratingForm = document.querySelector("[data-rating='form']")
 
-    fireBaseObject.on("value", function(snapshot) {
+    fireBaseObject.once("value", function(snapshot) {
         var walkObject = snapshot.val();
         docTitle.textContent = snapshot.val()['title'];
         docDesc.textContent = snapshot.val()['description'];
