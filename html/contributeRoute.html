@@ -20,8 +20,12 @@
     <title>WalkMe</title>
 </head>
 <body>
+    
     <div class="form-container">
             <form data-walk="form">
+                <div class='heading'>
+                <h2><strong>Step 1: </strong>Describe Your Walk</h2>
+                </div>
                 <div class="walk">
                     <input type="text" id="user_id" name="user" placeholder='User name'>
                     <input type="text" id="title" name="contributer_title" maxlength="12" placeholder='Title: 12 character max'>
@@ -32,10 +36,13 @@
                         <img id="output_image"/>
                     </div>
                     <progress value="0" max="100" id="uploader">0%</progress>
-                    <button type="submit">Submit your walk!</button>
+                    <button type="submit">Submit Walk Details</button>
                 </div>  
             </form>
             <form data-poi="form" id="poi">
+                    <div class='heading'>
+                            <h2><strong>Step 2: </strong>Add Points of Interest</h2>
+                    </div>
                 <div class="walk">
                     <input type="text" id="next_location" name="poi-address" placeholder='POI street address'>
                     <div class="citystate">
@@ -44,13 +51,16 @@
                     </div class="walk">
                     <input type="text" id="start-title" name="poi-title" placeholder='POI title'>
                     <textarea id="start-content" name="poi-content" placeholder='POI Description'></textarea>
-                    <button type="submit">Add point of interest</button>
+                    <button type="submit">Add POI</button>
                 </div>
             </form>
     </div>
     <div class='map'></div>
     <div class="review">
-        <button type="input" id="review">Review walk and submit.</button>
+            <div class='heading'>
+                    <h2><strong>Step 3: </strong>Click:  </h2>
+                    </div>
+        <button type="input" id="review">Submit Your Walk!</button>
     </div>
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script>
