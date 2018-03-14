@@ -403,24 +403,28 @@ var getWalkerLocation = function() {
 }
 
 var navClickEvents = function() {
-    var landingPageSelector = document.getElementById('landingpage')
+    var landingPageSelector = document.getElementById('landingpage');
+    var addViewSelector = document.getElementById('addview');
     var home = document.querySelector('.home')
     home.addEventListener('click', function(){
         listViewSelector.className = "viewable-off";
         detailViewSelector.className = "viewable-off";
         landingPageSelector.className = "viewable-on";
+        addViewSelector.className = "viewable-off";
     })
     var directory = document.querySelector('.directory')
     directory.addEventListener('click', function(){
         listViewSelector.className = "viewable-on";
         detailViewSelector.className = "viewable-off";
         landingPageSelector.className = "viewable-off";
+        addViewSelector.className = "viewable-off";
     })
     var add = document.querySelector('.add')
     add.addEventListener('click', function(){
         listViewSelector.className = "viewable-off";
         detailViewSelector.className = "viewable-off";
         landingPageSelector.className = "viewable-off";
+        addViewSelector.className = "viewable-on";
     })
 };
 
