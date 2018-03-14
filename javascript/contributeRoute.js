@@ -177,6 +177,7 @@ var calcRoute = function(pois) {
         localRoute['distance'] = metersToMiles(totalDistance);
         localRoute['duration'] = secondsToMinutes(totalTime);
         saveWalktoFirebase(localRoute);
+        localRoute = null;
     });
 }
 

@@ -1,9 +1,14 @@
 var listViewSelector = document.getElementById('listview');
+var walkCards = document.getElementById('walk-cards');
 var detailViewSelector = document.getElementById('modal');
 var contributionsSelector = document.getElementById('addview');
+var sortDistance = document.getElementById('distance');
+var sortLength = document.getElementById('length');
+var sortRating = document.getElementById('rating');
 var mapContainer = document.querySelector(".map");
 var map;
 var walkerLocation = null;
+
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -11,15 +16,15 @@ var createListView = function () {
         data.forEach(function(child){
             var objectId = child.key;
             var routeCard = createRouteCardSkeleton(child, objectId);
-            listViewSelector.appendChild(routeCard);
+            walkCards.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
                 makeDetailView(objectId);
                 detailViewSelector.className = "viewable-on";
             })
         })
-        getWalkerLocation();
     })
+    getWalkerLocation();
 }
 
 var distanceTwoCoors = function(lat1, lon1, lat2, lon2, unit) {
@@ -46,7 +51,7 @@ var updateDistanceTo = function(allCards, location){
 }
 
 var sortFeature = function (sortBy) {
-    var list = document.getElementById('listview');
+    var list = document.getElementById('walk-cards');
     var items = list.children;
     var arr = Array.prototype.slice.call(items);
     if (sortBy === 'distance'){
@@ -54,10 +59,15 @@ var sortFeature = function (sortBy) {
             return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
                         parseFloat(b.children[1].children[0].children[1].children[1].textContent)
         })
-    } if (sortBy === 'length') {
+    } else if (sortBy === 'length') {
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[3].children[1].textContent) -
                         parseFloat(b.children[1].children[3].children[1].textContent)
+        })
+    } else if (sortBy === 'rating') {
+        arr.sort(function(a, b) {
+            return parseFloat(b.children[1].children[1].children[0]['attributes'][1].value) -
+                        parseFloat(a.children[1].children[1].children[0]['attributes'][1].value)
         })
     }
         list.innerHTML = "";
@@ -73,6 +83,12 @@ var getAmountOfStars = function(div, id) {
     fireBaseObject.on('value', function(snapshot) {
         var rating = parseInt(snapshot.val()['rating']);
         var raters = parseInt(snapshot.val()['raters']);
+        var score = rating / raters;
+        if (score === NaN) {
+            div.setAttribute("rating", 0);
+        } else {
+            div.setAttribute("rating", rating / raters);
+        }
         if (rating && raters !== false) {
             starAmount = parseInt(Math.floor(rating/raters));
         } else {
@@ -135,7 +151,6 @@ var getAmountOfStars = function(div, id) {
 };
 
 var genImg = function(imageElem, filename) {
-    console.log(filename);
     var filepath = 'test/' + filename;
     var storage = firebase.storage();
     var storageRef = storage.ref();
@@ -449,7 +464,15 @@ var navClickEvents = function() {
 
 navClickEvents();
 createListView();
-
+sortDistance.addEventListener("click", function(){
+    sortFeature('distance');
+});
+sortLength.addEventListener("click", function(){
+    sortFeature('length');
+});
+sortRating.addEventListener("click", function(){
+    sortFeature('rating');
+});
 
 
 

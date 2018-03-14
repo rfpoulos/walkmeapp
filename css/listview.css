@@ -374,6 +374,11 @@
         height: 100%;
         margin-top:65px;
     }
+    .sort-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
     @media (max-width: 600px) { 
         /* effects css when smaller than 600px */
  
