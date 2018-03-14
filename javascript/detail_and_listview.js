@@ -20,17 +20,29 @@ var createListView = function () {
         getWalkerLocation();
     })
 }
+
+var distanceTwoCoors = function(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180;
+	var radlat2 = Math.PI * lat2/180;
+	var theta = lon1-lon2;
+	var radtheta = Math.PI * theta/180;
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist);
+	dist = dist * 180/Math.PI;
+	dist = dist * 60 * 1.1515;
+	if (unit=="K") { dist = dist * 1.609344 };
+	if (unit=="N") { dist = dist * 0.8684 };
+	return dist
+}
 var updateDistanceTo = function(allCards, location){
-    var walkerLocationTemp = new google.maps.LatLng(location['lat'], location['lng']);
     for(var i = 0; i < allCards.length; i++) {
-        console.log(parseFloat(allCards[i].getAttribute("start-lng")));
-        var dbStartLocationRef = new google.maps.LatLng(parseFloat(allCards[i].getAttribute("start-lat")), parseFloat(allCards[i].getAttribute("start-lat")));
-        var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
+        var newLat = parseFloat(allCards[i].getAttribute("start-lat"));
+        var newLng = parseFloat(allCards[i].getAttribute("start-lng"));
+        var distance = distanceTwoCoors(location['lat'], location['lng'], newLat, newLng, "N");
         var currentElement = allCards[i].getElementsByClassName('distancefrom');
-        currentElement[0].childNodes[1].textContent = (distanceFromValue / 1609.344).toFixed(0) + ' mi';
+        currentElement[0].childNodes[1].textContent = distance.toFixed(1) + ' mi';
     }
 }
-
 var getAmountOfStars = function(div, id) {
     var starAmount;
     var fireBaseObject = firebase.database().ref('routes/' + id);
