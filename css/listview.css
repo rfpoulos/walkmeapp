@@ -17,12 +17,16 @@
         height: 9%;
         box-shadow: 0px -17px 16px 17px rgba(0,0,0,0.29);
         z-index: 4;
+        display:flex;
+        justify-content: center;
     }
     .nav-title {
         width: 200px;
-        margin-left: 25%;
+        margin-left: 50%;
         margin-right: 50%;
-        margin-top: 5px;
+        margin-top: 13px;
+        margin-bottom: 13px;
+        
     }
     #bottom-nav {
         background-color: #ffeead;
@@ -38,7 +42,9 @@
         margin-top: 9%;
         flex-flow: row wrap;
         justify-content: space-around;
+        margin-bottom: 8%;
     }
+
     .container_modal {
         margin-top: 90px;
     }
@@ -311,13 +317,86 @@
     .viewable-off {
         display: none;
     }
+
+    .bottom-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 10px;
+    }
+
+    .home {
+        display:flex;
+        margin-left:20px;
+    }
+    .directory {
+        display:flex;
+    }
+    .add {
+        display:flex;
+        margin-right: 20px;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 35px;
+        font-family: 'Nanum Pen Script', cursive;
+        color: black; 
+    }
+
+    #landingpage {
+        height: 100%;
+        width: 100%;
+        /* background-color: #92d1b3; */
+        background-color: white;
+        justify-content: center;
+    }
+
+    .landing-image {
+        width: 50%;
+        height: 100%;
+
+    }
     
-    @media (max-width: 600px) {
+    @media (max-width: 600px) { 
+        /* effects css when smaller than 600px */
     
         .info {
             display: flex;
             flex-direction: column;
             font-weight: 200;
             width: 100%
+        }
+
+        .bottom-menu {
+            margin-top: 5px;
+        }
+
+        .add {
+            margin-right: 20px;
+        }
+
+        #listview {
+            margin-top: 16%;
+            flex-flow: row wrap;
+            justify-content: space-around;
+        }
+
+        .nav-title {
+            width: 200px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .landing-image {
+            width: 100%;
+            height: 100%;
+        }
+
+        #landingpage {
+            height: 100%;
+            width: 100%;
+            margin-left: 0%;
+            margin-right: 0%;
         }
     }
