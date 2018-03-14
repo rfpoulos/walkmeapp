@@ -379,6 +379,11 @@
         display: flex;
         justify-content: space-around;
     }
+    #walk-cards {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
     @media (max-width: 600px) { 
         /* effects css when smaller than 600px */
  
@@ -401,8 +406,8 @@
 
         #listview {
             margin-top: 16%;
+            width: 100%;
             flex-flow: row wrap;
-            justify-content: space-around;
         }
 
         .nav-title {
