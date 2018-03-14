@@ -29,10 +29,13 @@
         
     }
     #bottom-nav {
+        left: 0;
+        right: 0;
         background-color: #ffeead;
         position: fixed;
+        display: block;
         width: 100%;
-        bottom: 0%;
+        bottom: 0;
         height: 9%;
         z-index: 4;
 
@@ -44,9 +47,12 @@
         justify-content: space-around;
         margin-bottom: 8%;
     }
+    #listview-container {
+        padding-bottom: 20%;
+    }
 
     .container_modal {
-        margin-top: 90px;
+        height: 100%;
     }
     .route-container {
         display:flex;
@@ -236,6 +242,7 @@
    .container_modal {
        height: 100%;
        width: 100%;
+       margin: 10%;
    }
    
     #title {
@@ -323,7 +330,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-top: 10px;
+        padding: 1%;
     }
 
     .home {
@@ -374,16 +381,18 @@
     }
     @media (max-width: 600px) { 
         /* effects css when smaller than 600px */
-
+ 
         .info {
             display: flex;
             flex-direction: column;
             font-weight: 200;
-            width: 100%
+            width: 100%;
         }
 
         .bottom-menu {
-            margin-top: 5px;
+            margin: 2%;
+            height: 50%;
+            font-size: 50%;
         }
 
         .add {
