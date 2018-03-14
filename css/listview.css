@@ -330,7 +330,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        padding: 1%;
+        margin-top: 10px;
     }
 
     .home {
@@ -375,6 +375,7 @@
         margin-top:65px;
     }
     .sort-buttons {
+        margin-top: 10px;
         width: 100%;
         display: flex;
         justify-content: space-around;
@@ -396,9 +397,7 @@
         }
 
         .bottom-menu {
-            margin: 2%;
-            height: 50%;
-            font-size: 50%;
+            margin-top: 10px;
         }
 
         .add {
