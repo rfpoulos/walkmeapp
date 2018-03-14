@@ -52,6 +52,7 @@ var sortByDistance = function () {
         return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
                     parseFloat(b.children[1].children[0].children[1].children[1].textContent)
     });
+        list.innerHTML = "";
     for (i = 0; i < arr.length; i++) {
         list.appendChild(arr[i]);
     }
