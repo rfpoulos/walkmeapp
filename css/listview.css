@@ -360,13 +360,14 @@
 
     }
     
-    .addview {
+    #addview {
         width: 100%;
         height: 100%;
-        margin-top:48px;
+        margin-top:65px;
     }
     @media (max-width: 600px) { 
         /* effects css when smaller than 600px */
+
         .info {
             display: flex;
             flex-direction: column;
