@@ -64,6 +64,7 @@ form {
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-bottom: 20%;
 }
 
 .output_container {
@@ -76,4 +77,11 @@ form {
   object-fit: contain;
   max-width: 100%;
   max-height: 10em;
+}
+
+@media (max-width: 600px) {
+#poi {
+  max-width: 100%;
+  max-height: 100%;
+}
 }
