@@ -18,8 +18,8 @@ var createListView = function () {
                 detailViewSelector.className = "viewable-on";
             })
         })
-        getWalkerLocation();
     })
+    getWalkerLocation();
 }
 
 var distanceTwoCoors = function(lat1, lon1, lat2, lon2, unit) {
