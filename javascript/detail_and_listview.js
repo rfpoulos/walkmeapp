@@ -44,14 +44,21 @@ var updateDistanceTo = function(allCards, location){
     }
 }
 
-var sortByDistance = function () {
+var sortFeature = function (sortBy) {
     var list = document.getElementById('listview');
     var items = list.children;
     var arr = Array.prototype.slice.call(items);
-    arr.sort(function(a, b) {
-        return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
-                    parseFloat(b.children[1].children[0].children[1].children[1].textContent)
-    });
+    if (sortBy === 'distance'){
+        arr.sort(function(a, b) {
+            return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
+                        parseFloat(b.children[1].children[0].children[1].children[1].textContent)
+        })
+    } if (sortBy === 'length') {
+        arr.sort(function(a, b) {
+            return parseFloat(a.children[1].children[3].children[1].textContent) -
+                        parseFloat(b.children[1].children[3].children[1].textContent)
+        })
+    }
         list.innerHTML = "";
     for (i = 0; i < arr.length; i++) {
         list.appendChild(arr[i]);
@@ -386,7 +393,7 @@ var getWalkerLocation = function() {
             }
         var clsElements = document.getElementsByClassName("route-container");
         updateDistanceTo(clsElements, walkerLocation);
-        sortByDistance();
+        sortFeature('distance');
         })
     }
 }
@@ -412,7 +419,6 @@ var navClickEvents = function() {
     })
 };
 
-getWalkerLocation();
 navClickEvents();
 createListView();
 
