@@ -43,6 +43,21 @@ var updateDistanceTo = function(allCards, location){
         currentElement[0].childNodes[1].textContent = distance.toFixed(1) + ' mi';
     }
 }
+
+var sortByDistance = function () {
+    var list = document.getElementById('listview');
+    var items = list.children;
+    var arr = Array.prototype.slice.call(items);
+    arr.sort(function(a, b) {
+        return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
+                    parseFloat(b.children[1].children[0].children[1].children[1].textContent)
+    });
+    for (i = 0; i < arr.length; i++) {
+        list.appendChild(arr[i]);
+    }
+    return list;
+}
+
 var getAmountOfStars = function(div, id) {
     var starAmount;
     var fireBaseObject = firebase.database().ref('routes/' + id);
@@ -50,7 +65,6 @@ var getAmountOfStars = function(div, id) {
         var rating = parseInt(snapshot.val()['rating']);
         var raters = parseInt(snapshot.val()['raters']);
         if (rating && raters !== false) {
-            console.log(raters);
             starAmount = parseInt(Math.floor(rating/raters));
         } else {
             starAmount = 0;
@@ -271,7 +285,6 @@ var makeDetailView = function(id) {
                 content: '',
             })
         }
-        console.log(pois)
         initMap(pois[0]['location'], pois, 15);
         adjustMap(pois);
         navigate.addEventListener("click", function(event){
@@ -283,8 +296,6 @@ var makeDetailView = function(id) {
             addRating(walkObject, fireBaseObject);
         });
     });
-
-
     returnBtnSelector.addEventListener('click', function() {
         listViewSelector.className = "viewable-on";
         detailViewSelector.className = "viewable-off"
@@ -316,7 +327,6 @@ var initMap = function(location, pois, zoomLevel) {
         addPOIMarker(element['location'], element['title'], element['content']);
     })
     google.maps.event.addListener(map, function() {
-        addPOIMarker();
         adjustMap();
         });
         
@@ -375,11 +385,10 @@ var getWalkerLocation = function() {
             }
         var clsElements = document.getElementsByClassName("route-container");
         updateDistanceTo(clsElements, walkerLocation);
+        sortByDistance();
         })
     }
 }
-<<<<<<< HEAD
-=======
 var navClickEvents = function() {
     var landingPageSelector = document.getElementById('landingpage')
     var home = document.querySelector('.home')
@@ -404,7 +413,6 @@ var navClickEvents = function() {
 
 getWalkerLocation();
 navClickEvents();
->>>>>>> 8a7c7526711fae96379071bfde84201956a82d52
 createListView();
 
 
