@@ -340,8 +340,9 @@
     a {
         text-decoration: none;
         font-size: 35px;
-        font-family: 'Nanum Pen Script', cursive;
-        color: black; 
+        font-family: 'Nanum Pen Script', 'cursive';
+        color: black;
+        cursor: pointer;
     }
 
     #landingpage {
