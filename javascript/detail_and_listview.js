@@ -1,9 +1,14 @@
 var listViewSelector = document.getElementById('listview');
+var walkCards = document.getElementById('walk-cards');
 var detailViewSelector = document.getElementById('modal');
 var contributionsSelector = document.getElementById('addview');
+var sortDistance = document.getElementById('distance');
+var sortLength = document.getElementById('length');
+var sortRating = document.getElementById('rating');
 var mapContainer = document.querySelector(".map");
 var map;
 var walkerLocation = null;
+
 
 var createListView = function () {
     var dbRoutes = firebase.database().ref('routes');
@@ -11,7 +16,7 @@ var createListView = function () {
         data.forEach(function(child){
             var objectId = child.key;
             var routeCard = createRouteCardSkeleton(child, objectId);
-            listViewSelector.appendChild(routeCard);
+            walkCards.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
                 makeDetailView(objectId);
@@ -46,15 +51,16 @@ var updateDistanceTo = function(allCards, location){
 }
 
 var sortFeature = function (sortBy) {
-    var list = document.getElementById('listview');
+    var list = document.getElementById('walk-cards');
     var items = list.children;
     var arr = Array.prototype.slice.call(items);
+    console.log(arr[0].children[1].children[3].children[1].textContent);
     if (sortBy === 'distance'){
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
                         parseFloat(b.children[1].children[0].children[1].children[1].textContent)
         })
-    } if (sortBy === 'length') {
+    } else if (sortBy === 'length') {
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[3].children[1].textContent) -
                         parseFloat(b.children[1].children[3].children[1].textContent)
@@ -449,6 +455,12 @@ var navClickEvents = function() {
 
 navClickEvents();
 createListView();
+sortDistance.addEventListener("click", function(){
+    sortFeature('distance');
+});
+sortLength.addEventListener("click", function(){
+    sortFeature('length');
+});
 
 
 
