@@ -9,7 +9,7 @@ var createListView = function () {
     dbRoutes.on('value', function(data){
         data.forEach(function(child){
             var objectId = child.key;
-            var routeCard = createRouteCardSkeleton(child, objectId, walkerLocation);
+            var routeCard = createRouteCardSkeleton(child, objectId);
             listViewSelector.appendChild(routeCard);
             routeCard.addEventListener('click', function(){
                 listViewSelector.className = "viewable-off";
@@ -17,9 +17,32 @@ var createListView = function () {
                 detailViewSelector.className = "viewable-on"
             })
         })
+        getWalkerLocation();
     })
 }
 
+var distanceTwoCoors = function(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180;
+	var radlat2 = Math.PI * lat2/180;
+	var theta = lon1-lon2;
+	var radtheta = Math.PI * theta/180;
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist);
+	dist = dist * 180/Math.PI;
+	dist = dist * 60 * 1.1515;
+	if (unit=="K") { dist = dist * 1.609344 };
+	if (unit=="N") { dist = dist * 0.8684 };
+	return dist
+}
+var updateDistanceTo = function(allCards, location){
+    for(var i = 0; i < allCards.length; i++) {
+        var newLat = parseFloat(allCards[i].getAttribute("start-lat"));
+        var newLng = parseFloat(allCards[i].getAttribute("start-lng"));
+        var distance = distanceTwoCoors(location['lat'], location['lng'], newLat, newLng, "N");
+        var currentElement = allCards[i].getElementsByClassName('distancefrom');
+        currentElement[0].childNodes[1].textContent = distance.toFixed(1) + ' mi';
+    }
+}
 var getAmountOfStars = function(div, id) {
     var starAmount;
     var fireBaseObject = firebase.database().ref('routes/' + id);
@@ -88,25 +111,23 @@ var getAmountOfStars = function(div, id) {
     div.appendChild(imgReviewStars5);
 };
 
-var createRouteCardSkeleton = function(object, id, walkerLoc) {
+var createRouteCardSkeleton = function(object, id) {
     var dbTitleRef = object.val().title;
-    var walkerLocationTemp = new google.maps.LatLng(32.7590136, -84.3296775);
-    var dbStartLocationRef = new google.maps.LatLng(object.val().startLocation.lat,object.val().startLocation.lng);
-
     var dbAddressRef = object.val().address;
     var dbCityRef = object.val().city;
     var dbStateRef = object.val().state;
-
     var dbRatingRef = object.val().rating;
     var dbReviewsRef = object.val().raters;
-
     var dbTimeRef = object.val().duration;
     var dbLengthRef = object.val().distance.toFixed(2);
-    
     var dbUserIdRef = object.val().userID;
+    var startLocation =object.val()['pois'][0]['location'];
 
     var divRouteContainer = document.createElement('div');
     divRouteContainer.setAttribute("class", "route-container");
+    divRouteContainer.setAttribute("start-lat", startLocation['lat']);
+    divRouteContainer.setAttribute("start-lng", startLocation['lng']);
+    divRouteContainer.className = 'route-container';
 
     var divImageSection = document.createElement('div');
     divImageSection.setAttribute("class", "image-section");
@@ -152,7 +173,7 @@ var createRouteCardSkeleton = function(object, id, walkerLoc) {
     divTitleAndDistance.appendChild(divRouteTitle);
 
     var divDistanceFrom = document.createElement('div');
-    divDistanceFrom.setAttribute("class", "distancefrom");
+    divDistanceFrom.className = 'distancefrom';
     divTitleAndDistance.appendChild(divDistanceFrom);
 
     var divDistanceIcon = document.createElement('div');
@@ -165,9 +186,9 @@ var createRouteCardSkeleton = function(object, id, walkerLoc) {
     divDistanceIcon.appendChild(imgDistanceIcon);
 
     var divDistanceNumber = document.createElement('div');
-    divDistanceNumber.setAttribute("class", "distancefrom-number");
-    var distanceFromValue = google.maps.geometry.spherical.computeDistanceBetween(walkerLocationTemp, dbStartLocationRef);
-    divDistanceNumber.textContent = (distanceFromValue*= 0.000621371192).toFixed(0) + ' mi';
+    divDistanceNumber.className = 'distancefrom-number';
+    
+    divDistanceNumber.textContent = '0';
     divDistanceFrom.appendChild(divDistanceNumber);
     
     var divReviewStars = document.createElement('div');
@@ -243,13 +264,14 @@ var makeDetailView = function(id) {
         userImage.src = snapshot.val()['thumbnail'];
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
-        if (walkerLocation !== null){
-            pois.pop({
+        if (walkerLocation) {
+            pois.unshift({
                 location: walkerLocation,
                 title: 'You are here!',
                 content: '',
-            });
+            })
         }
+        console.log(pois)
         initMap(pois[0]['location'], pois, 15);
         adjustMap(pois);
         navigate.addEventListener("click", function(event){
@@ -351,9 +373,13 @@ var getWalkerLocation = function() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
             }
+        var clsElements = document.getElementsByClassName("route-container");
+        updateDistanceTo(clsElements, walkerLocation);
         })
     }
 }
+<<<<<<< HEAD
+=======
 var navClickEvents = function() {
     var landingPageSelector = document.getElementById('landingpage')
     var home = document.querySelector('.home')
@@ -376,7 +402,9 @@ var navClickEvents = function() {
     })
 };
 
+getWalkerLocation();
 navClickEvents();
+>>>>>>> 8a7c7526711fae96379071bfde84201956a82d52
 createListView();
 
 
