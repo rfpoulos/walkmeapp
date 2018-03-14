@@ -283,7 +283,8 @@ var makeDetailView = function(id) {
         docCity.textContent = snapshot.val()['city'];
         docState.textContent = snapshot.val()['state'];
         docUserId.textContent = snapshot.val()['userID'];
-        userImage.src = snapshot.val()['thumbnail'];
+        userImageTitle = snapshot.val()['thumbnail'];
+        genImg(userImage, userImageTitle);
         var startLocation = snapshot.val()['startLocation'];
         var pois = snapshot.val()['pois'];
         if (walkerLocation) {
