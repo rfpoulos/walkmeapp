@@ -54,7 +54,6 @@ var sortFeature = function (sortBy) {
     var list = document.getElementById('walk-cards');
     var items = list.children;
     var arr = Array.prototype.slice.call(items);
-    console.log(arr[0].children[1].children[1].children[0]['attributes'][1].value);
     if (sortBy === 'distance'){
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
@@ -152,7 +151,6 @@ var getAmountOfStars = function(div, id) {
 };
 
 var genImg = function(imageElem, filename) {
-    console.log(filename);
     var filepath = 'test/' + filename;
     var storage = firebase.storage();
     var storageRef = storage.ref();
