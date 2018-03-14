@@ -54,7 +54,7 @@ var sortFeature = function (sortBy) {
     var list = document.getElementById('walk-cards');
     var items = list.children;
     var arr = Array.prototype.slice.call(items);
-    console.log(arr[0].children[1].children[3].children[1].textContent);
+    console.log(arr[0].children[1].children[1].children[0]['attributes'][1].value);
     if (sortBy === 'distance'){
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[0].children[1].children[1].textContent) -
@@ -64,6 +64,11 @@ var sortFeature = function (sortBy) {
         arr.sort(function(a, b) {
             return parseFloat(a.children[1].children[3].children[1].textContent) -
                         parseFloat(b.children[1].children[3].children[1].textContent)
+        })
+    } else if (sortBy === 'rating') {
+        arr.sort(function(a, b) {
+            return parseFloat(b.children[1].children[1].children[0]['attributes'][1].value) -
+                        parseFloat(a.children[1].children[1].children[0]['attributes'][1].value)
         })
     }
         list.innerHTML = "";
@@ -79,6 +84,12 @@ var getAmountOfStars = function(div, id) {
     fireBaseObject.on('value', function(snapshot) {
         var rating = parseInt(snapshot.val()['rating']);
         var raters = parseInt(snapshot.val()['raters']);
+        var score = rating / raters;
+        if (score === NaN) {
+            div.setAttribute("rating", 0);
+        } else {
+            div.setAttribute("rating", rating / raters);
+        }
         if (rating && raters !== false) {
             starAmount = parseInt(Math.floor(rating/raters));
         } else {
@@ -461,7 +472,9 @@ sortDistance.addEventListener("click", function(){
 sortLength.addEventListener("click", function(){
     sortFeature('length');
 });
-
+sortRating.addEventListener("click", function(){
+    sortFeature('rating');
+});
 
 
 
